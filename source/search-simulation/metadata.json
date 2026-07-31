@@ -1,0 +1,8 @@
+{
+  "name": "N80FP Search Simulation",
+  "description": "A 3D interactive simulation of the Lake Pontchartrain search area for N80FP, featuring modeled POIs, search ellipse, and a drivable boat.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}
