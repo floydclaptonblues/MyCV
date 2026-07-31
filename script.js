@@ -43,7 +43,9 @@ function installRecoveredSearchSimulation() {
         status.textContent = 'RECOVERED';
       }
       if (title) title.textContent = 'Search simulation source';
-      if (copy) copy.textContent = 'The recovered React and Three.js source stores the modeled POI, LKP, debris reference, search ellipse, live GPS workflow, path tracking, and Clear / Debris / Crash marker system.';
+      if (copy) {
+        copy.textContent = 'The recovered React and Three.js source stores the modeled POI, LKP, debris reference, search ellipse, live GPS workflow, path tracking, and Clear / Debris / Crash marker system.';
+      }
     }
   }
 }
@@ -58,9 +60,7 @@ function installOpenAICorrespondence() {
   section.innerHTML = `
     <p class="section-index">08 / OPENAI CORRESPONDENCE</p>
     <div class="section-heading-row">
-      <div>
-        <h2>OpenAI Support correspondence.</h2>
-      </div>
+      <div><h2>OpenAI Support correspondence.</h2></div>
       <div class="body-copy">
         <p>Under support case 03361518, Ryan submitted a curated account of the N80FP work, including primary ChatGPT investigation threads, methodology, search-grid context, and public confirmation that the aircraft had been located.</p>
         <p>OpenAI Support confirmed receipt of the materials and stated that they would be reviewed internally.</p>
@@ -102,7 +102,7 @@ function installOpenAICorrespondence() {
   if (evidenceIndex) evidenceIndex.textContent = '09 / EVIDENCE REGISTER';
 
   const evidenceGrid = evidenceSection.querySelector('.evidence-grid');
-  if (evidenceGrid) {
+  if (evidenceGrid && ![...evidenceGrid.children].some((item) => item.textContent.includes('OpenAI correspondence'))) {
     const card = document.createElement('article');
     card.innerHTML = `
       <span class="evidence-status verified">ARCHIVED</span>
@@ -147,17 +147,12 @@ function installEditorialRevisions() {
     const quote = deployment.querySelector('blockquote');
     if (quote) quote.remove();
 
-    const markerKey = deployment.querySelector('.marker-key');
-    if (markerKey && !deployment.querySelector('.field-identification')) {
-      const identification = document.createElement('p');
-      identification.className = 'field-identification';
-      identification.textContent = 'Ryan Hall is visible at the far left in a plaid shirt and glasses.';
-      markerKey.before(identification);
-    }
+    const incorrectIdentification = deployment.querySelector('.field-identification');
+    if (incorrectIdentification) incorrectIdentification.remove();
 
     const fieldImage = deployment.querySelector('img');
     if (fieldImage) {
-      fieldImage.alt = 'Search personnel aboard a boat on Lake Pontchartrain during the N80FP field operation; Ryan Hall is visible at the far left, identifiable by his red hair, plaid shirt, and glasses.';
+      fieldImage.alt = 'Search personnel aboard a boat on Lake Pontchartrain during the N80FP field operation.';
     }
   }
 
@@ -172,6 +167,19 @@ function installEditorialRevisions() {
     const paragraphs = outcome.querySelectorAll('.outcome-copy > p');
     if (paragraphs[1]) {
       paragraphs[1].textContent = 'The strongest verified result of this project is that an AI-assisted analysis was translated into a real mobile coordination tool, deployed in a live search environment, and used by people other than its creator.';
+    }
+
+    const recoveryArtifact = outcome.querySelector('.recovery-artifact');
+    if (recoveryArtifact) {
+      const recoveryImage = recoveryArtifact.querySelector('img');
+      if (recoveryImage) {
+        recoveryImage.alt = 'United Cajun Navy recovery update reading Missing Cessna 172 plane located; Ryan Hall is visible at the far left in a plaid shirt and glasses, identifiable by his red hair.';
+      }
+
+      const recoveryCaption = recoveryArtifact.querySelector('figcaption p');
+      if (recoveryCaption) {
+        recoveryCaption.textContent = 'Archived United Cajun Navy recovery update. Ryan Hall is visible at the far left in a plaid shirt and glasses, identifiable by his red hair.';
+      }
     }
   }
 
