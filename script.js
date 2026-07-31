@@ -10,6 +10,44 @@ function updateProgress() {
   progressBar.style.width = `${value}%`;
 }
 
+function installRecoveredSearchSimulation() {
+  const systemSection = document.getElementById('system');
+  const evidenceSection = document.getElementById('evidence');
+
+  if (systemSection) {
+    const headingNote = systemSection.querySelector('.heading-note');
+    if (headingNote) {
+      headingNote.textContent = 'Both field-interface sources have now been recovered. The specialized search simulation explicitly stores the modeled POI, LKP, Cajun Navy slick/debris coordinate, search ellipse, live GPS workflow, and Clear / Debris / Crash marker system.';
+    }
+
+    const inlineActions = systemSection.querySelector('.inline-actions');
+    if (inlineActions && !inlineActions.querySelector('[href="source/search-simulation/README.md"]')) {
+      const link = document.createElement('a');
+      link.className = 'button secondary';
+      link.href = 'source/search-simulation/README.md';
+      link.textContent = 'Inspect search simulation';
+      inlineActions.appendChild(link);
+    }
+  }
+
+  if (evidenceSection) {
+    const advancedSourceCard = [...evidenceSection.querySelectorAll('.evidence-grid article')]
+      .find((item) => item.textContent.includes('Advanced interface source'));
+
+    if (advancedSourceCard) {
+      const status = advancedSourceCard.querySelector('.evidence-status');
+      const title = advancedSourceCard.querySelector('h3');
+      const copy = advancedSourceCard.querySelector('p');
+      if (status) {
+        status.className = 'evidence-status verified';
+        status.textContent = 'RECOVERED';
+      }
+      if (title) title.textContent = 'Specialized search simulation';
+      if (copy) copy.textContent = 'Recovered React and Three.js source explicitly stores the modeled POI at 30.1038, −90.0309 and implements the search ellipse, live GPS, path tracking, and Clear / Debris / Crash field markers.';
+    }
+  }
+}
+
 function installOpenAICorrespondence() {
   const evidenceSection = document.getElementById('evidence');
   if (!evidenceSection || document.getElementById('correspondence')) return;
@@ -71,11 +109,12 @@ function installOpenAICorrespondence() {
       <h3>OpenAI correspondence</h3>
       <p>Support case 03361518 documents receipt of the methodology, investigation threads, contextual materials, and stated outcome for internal review.</p>
     `;
-    const pendingCard = [...evidenceGrid.children].find((item) => item.textContent.includes('Advanced interface source'));
-    evidenceGrid.insertBefore(card, pendingCard || null);
+    const precisionCard = [...evidenceGrid.children].find((item) => item.textContent.includes('Precision claim'));
+    evidenceGrid.insertBefore(card, precisionCard || null);
   }
 }
 
+installRecoveredSearchSimulation();
 installOpenAICorrespondence();
 
 window.addEventListener('scroll', updateProgress, { passive: true });
