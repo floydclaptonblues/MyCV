@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#061018" />
+  <title>N80FP — Reconstructed Field Tracker Demo</title>
+  <link rel="stylesheet" href="demo.css" />
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back">← CASE STUDY</a>
+    <div><strong>N80FP FIELD TRACKER</strong><span>RECONSTRUCTED BROWSER DEMO</span></div>
+    <span class="status" id="status"><i></i> SIMULATION</span>
+  </header>
+  <main>
+    <aside class="console">
+      <section class="console-block">
+        <p class="label">LIVE POSITION</p>
+        <dl>
+          <div><dt>LAT</dt><dd id="lat">30.105050</dd></div>
+          <div><dt>LON</dt><dd id="lon">-90.030150</dd></div>
+          <div><dt>ACC</dt><dd id="accuracy">SIM</dd></div>
+          <div><dt>SPD</dt><dd id="speed">0.0 kt</dd></div>
+          <div><dt>HDG</dt><dd id="heading">180°</dd></div>
+        </dl>
+        <button class="gps" id="gpsButton">ENABLE DEVICE GPS</button>
+      </section>
+      <section class="console-block">
+        <div class="block-heading"><p class="label">DROP MARKER</p><span id="markerCount">0 ACTIVE</span></div>
+        <div class="marker-buttons">
+          <button data-type="clear" class="clear"><b>●</b>CLEAR</button>
+          <button data-type="debris" class="debris"><b>◆</b>DEBRIS</button>
+          <button data-type="aircraft" class="aircraft"><b>▲</b>AIRCRAFT</button>
+        </div>
+      </section>
+      <section class="console-block compact">
+        <p class="label">FIELD RECORD</p>
+        <button id="exportButton" class="utility">EXPORT CSV</button>
+        <button id="clearButton" class="utility danger">CLEAR MARKERS</button>
+      </section>
+      <section class="console-block note">
+        <p class="label">PORTFOLIO NOTICE</p>
+        <p>This is a reconstructed demonstration based on recovered source and archived screenshots. It is not the original deployed build and is not certified for navigation or emergency use.</p>
+      </section>
+    </aside>
+    <section class="viewport" aria-label="Field tracker plot">
+      <canvas id="scene"></canvas>
+      <div class="hud top-left"><span>SEARCH SECTOR</span><strong>~0.9 NM × ~0.5 NM</strong></div>
+      <div class="hud top-right"><span>ORIGIN REF</span><strong>30.1070, −90.0285</strong></div>
+      <div class="legend"><span><i class="poi"></i> MODELED POI</span><span><i class="lkp"></i> LKP</span><span><i class="slick"></i> SLICK / DEBRIS</span></div>
+      <div class="manual-controls" aria-label="Manual simulation controls">
+        <button data-move="north" aria-label="Move north">↑</button>
+        <button data-move="west" aria-label="Move west">←</button>
+        <button data-move="south" aria-label="Move south">↓</button>
+        <button data-move="east" aria-label="Move east">→</button>
+      </div>
+      <p class="manual-note">Simulation: arrow keys or controls move the boat · GPS replaces simulation when enabled</p>
+    </section>
+  </main>
+  <script src="demo.js"></script>
+</body>
+</html>
