@@ -4,7 +4,7 @@ A documented case study of the AI-assisted modeling, live GPS tooling, and field
 
 ## Recovered technical artifacts
 
-Two separate operational applications are now represented in the repository:
+Two separate operational applications are represented in the repository:
 
 - `source/tracker/` — the recovered live 3D boat tracker with browser geolocation, movement tracking, marker collection, and CSV export.
 - `source/search-simulation/` — the recovered specialized search-sector simulation shown in the archived interface screenshot.
@@ -16,6 +16,8 @@ The specialized simulation explicitly stores:
 - Cajun Navy slick/debris report: `30.1103, -90.0254`
 - a roughly `0.9 NM × 0.5 NM` search ellipse
 - live GPS, a movable boat, path tracking, and standardized `clear`, `debris`, and `crash` markers
+
+The recovered Google/Gemini application also preserves the live three-dimensional implementation used to examine trajectory behavior under configured altitude, speed, heading, position, and fixed-wing flight constraints. The case study therefore focuses on the inspectable model implementation and operational workflow rather than a standalone distance-to-impact claim.
 
 The recovered archive contained a non-empty `.env.local`; that file was excluded. No credential is published.
 
@@ -30,10 +32,11 @@ The public case study uses these original files from the repository's `assets/` 
 - `1000021131.jpg` — handwritten recognition letter and challenge coin
 - `Screenshot 2026-07-30 224632.png` — initial OpenAI Support acknowledgement, case 03361518
 - `Screenshot 2026-07-30 224612.png` — OpenAI Support follow-up confirming receipt of curated investigation materials
+- `Screenshot 2026-07-31 001724.png` — mission-planning email listing Ryan Hall as an SME in the operation's ICS structure
 
 The close-up selfie `1000021130.jpg` is intentionally not used.
 
-The OpenAI correspondence establishes that Support received the submitted methodology, primary investigation threads, contextual records, and stated outcome for internal review. It is not presented as an independent technical audit, verification of the pending distance-to-impact claim, or institutional endorsement of every assertion in the submission.
+The OpenAI correspondence establishes that Support received the submitted methodology, primary investigation threads, contextual records, and stated outcome for internal review. It is not presented as an independent technical audit or institutional endorsement of every assertion in the submission.
 
 ## GitHub Pages
 
@@ -48,4 +51,4 @@ The site should appear at:
 
 ## Evidentiary standard
 
-The specialized application source is no longer missing: it establishes the configured modeled coordinate and the operational design of the search interface. It does not, by itself, reproduce the upstream calculations that generated the coordinate or prove when it was first entered. The page therefore continues to withhold the precise distance-to-impact claim until the original timestamped prediction and authoritative recovery coordinate can be reproduced and compared.
+The repository separates source code, archived screenshots, operational-role documentation, field evidence, public reporting, and post-operation recognition. The recovered applications establish the configured model, live trajectory implementation, geospatial workflow, and field interface. Public records and operational artifacts establish the wider incident context and Ryan Hall's participation. The page avoids claiming that any one model or person independently completed the recovery operation.
