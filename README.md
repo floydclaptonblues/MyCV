@@ -2,6 +2,23 @@
 
 A documented case study of the AI-assisted modeling, live GPS tooling, and field coordination work developed during the search for aircraft N80FP in Lake Pontchartrain.
 
+## Recovered technical artifacts
+
+Two separate operational applications are now represented in the repository:
+
+- `source/tracker/` — the recovered live 3D boat tracker with browser geolocation, movement tracking, marker collection, and CSV export.
+- `source/search-simulation/` — the recovered specialized search-sector simulation shown in the archived interface screenshot.
+
+The specialized simulation explicitly stores:
+
+- modeled POI: `30.1038, -90.0309`
+- last-known-position marker: `30.1100, -90.0300`, approximately 908 feet
+- Cajun Navy slick/debris report: `30.1103, -90.0254`
+- a roughly `0.9 NM × 0.5 NM` search ellipse
+- live GPS, a movable boat, path tracking, and standardized `clear`, `debris`, and `crash` markers
+
+The recovered archive contained a non-empty `.env.local`; that file was excluded. No credential is published.
+
 ## Archived image evidence
 
 The public case study uses these original files from the repository's `assets/` folder:
@@ -18,8 +35,6 @@ The close-up selfie `1000021130.jpg` is intentionally not used.
 
 The OpenAI correspondence establishes that Support received the submitted methodology, primary investigation threads, contextual records, and stated outcome for internal review. It is not presented as an independent technical audit, verification of the pending distance-to-impact claim, or institutional endorsement of every assertion in the submission.
 
-All code and text files are included in the repository. The original tracker source has been sanitized: the private `.env.local` file was excluded, and the archive requires no published API key.
-
 ## GitHub Pages
 
 1. Open **Settings → Pages**.
@@ -33,4 +48,4 @@ The site should appear at:
 
 ## Evidentiary standard
 
-The page distinguishes recovered source artifacts, field photographs, public reporting, personal testimony, OpenAI Support correspondence, and claims awaiting verification. It does not publish the precise distance-to-impact claim until the timestamped modeled coordinate and authoritative recovery coordinate can be reproduced and compared.
+The specialized application source is no longer missing: it establishes the configured modeled coordinate and the operational design of the search interface. It does not, by itself, reproduce the upstream calculations that generated the coordinate or prove when it was first entered. The page therefore continues to withhold the precise distance-to-impact claim until the original timestamped prediction and authoritative recovery coordinate can be reproduced and compared.
