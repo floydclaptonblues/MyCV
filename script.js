@@ -17,7 +17,7 @@ function installRecoveredSearchSimulation() {
   if (systemSection) {
     const headingNote = systemSection.querySelector('.heading-note');
     if (headingNote) {
-      headingNote.textContent = 'Both field-interface sources have now been recovered. The specialized search simulation explicitly stores the modeled POI, LKP, Cajun Navy slick/debris coordinate, search ellipse, live GPS workflow, and Clear / Debris / Crash marker system.';
+      headingNote.textContent = 'Both the live 3D tracker and the specialized search simulation were recovered and archived. Together they show how the model was translated into field-useful interfaces during the operation.';
     }
 
     const inlineActions = systemSection.querySelector('.inline-actions');
@@ -42,8 +42,8 @@ function installRecoveredSearchSimulation() {
         status.className = 'evidence-status verified';
         status.textContent = 'RECOVERED';
       }
-      if (title) title.textContent = 'Specialized search simulation';
-      if (copy) copy.textContent = 'Recovered React and Three.js source explicitly stores the modeled POI at 30.1038, −90.0309 and implements the search ellipse, live GPS, path tracking, and Clear / Debris / Crash field markers.';
+      if (title) title.textContent = 'Search simulation source';
+      if (copy) copy.textContent = 'The recovered React and Three.js source stores the modeled POI, LKP, debris reference, search ellipse, live GPS workflow, path tracking, and Clear / Debris / Crash marker system.';
     }
   }
 }
@@ -59,11 +59,11 @@ function installOpenAICorrespondence() {
     <p class="section-index">08 / OPENAI CORRESPONDENCE</p>
     <div class="section-heading-row">
       <div>
-        <h2>The investigation record was submitted to OpenAI and acknowledged for internal review.</h2>
+        <h2>OpenAI Support correspondence.</h2>
       </div>
       <div class="body-copy">
         <p>Under support case 03361518, Ryan submitted a curated account of the N80FP work, including primary ChatGPT investigation threads, methodology, search-grid context, and public confirmation that the aircraft had been located.</p>
-        <p>OpenAI Support replied that the material offered meaningful insight into ChatGPT's practical impact in a real-world application and confirmed that the submission would be reviewed internally.</p>
+        <p>OpenAI Support confirmed receipt of the materials and stated that they would be reviewed internally.</p>
       </div>
     </div>
 
@@ -80,7 +80,7 @@ function installOpenAICorrespondence() {
         <figcaption>
           <span>OPENAI SUPPORT / CASE 03361518</span>
           <strong>Initial acknowledgement</strong>
-          <p>Support acknowledged the described methodology and outcome, characterized the submission as a notable high-stakes real-world use case, and said the report would be reviewed internally.</p>
+          <p>Support acknowledged the described methodology and outcome and stated that the report would be reviewed internally.</p>
         </figcaption>
       </figure>
       <figure class="artifact">
@@ -90,7 +90,7 @@ function installOpenAICorrespondence() {
         <figcaption>
           <span>OPENAI SUPPORT / FOLLOW-UP</span>
           <strong>Curated materials received</strong>
-          <p>After Ryan supplied the primary investigation threads and contextual records, Support confirmed receipt and stated that the material would be reviewed accordingly.</p>
+          <p>After Ryan supplied the primary investigation threads and contextual records, Support confirmed receipt and said the material would be reviewed.</p>
         </figcaption>
       </figure>
     </div>
@@ -114,8 +114,88 @@ function installOpenAICorrespondence() {
   }
 }
 
+function installEditorialRevisions() {
+  const heroHeading = document.querySelector('.hero-copy h1');
+  if (heroHeading) heroHeading.textContent = 'AI-assisted search modeling used in a live field operation.';
+
+  const heroDeck = document.querySelector('.hero-copy .hero-deck');
+  if (heroDeck) {
+    heroDeck.textContent = 'I developed a search workflow, translated it into mobile GPS interfaces, and shared a marker-based coordination system with boat crews during the human-led search for aircraft N80FP.';
+  }
+
+  const contextCopy = document.querySelector('#context .body-copy');
+  if (contextCopy) {
+    const paragraphs = contextCopy.querySelectorAll(':scope > p');
+    if (paragraphs[1]) {
+      paragraphs[1].textContent = 'The practical problem was not just generating another coordinate. It was organizing scattered flight data, candidate areas, debris observations, and eliminated locations into a workflow that people on boats could understand and use.';
+    }
+  }
+
+  const workflowHeading = document.querySelector('#workflow h2');
+  if (workflowHeading) workflowHeading.textContent = 'From model output to a usable field workflow.';
+
+  const deployment = document.getElementById('deployment');
+  if (deployment) {
+    const heading = deployment.querySelector('.field-copy h2');
+    if (heading) heading.textContent = 'The main task was making the tool usable in the field.';
+
+    const paragraph = deployment.querySelector('.field-copy > p:not(.section-index)');
+    if (paragraph) {
+      paragraph.textContent = "I used the tracker in the field and shared it with other boats so crews could use the same marker vocabulary. That reduced the chance that one crew's checked location, another crew's possible debris, and a third crew's handwritten coordinates would become disconnected records.";
+    }
+
+    const quote = deployment.querySelector('blockquote');
+    if (quote) quote.remove();
+
+    const markerKey = deployment.querySelector('.marker-key');
+    if (markerKey && !deployment.querySelector('.field-identification')) {
+      const identification = document.createElement('p');
+      identification.className = 'field-identification';
+      identification.textContent = 'Ryan Hall is visible at the far left in a plaid shirt and glasses.';
+      markerKey.before(identification);
+    }
+
+    const fieldImage = deployment.querySelector('img');
+    if (fieldImage) {
+      fieldImage.alt = 'Search personnel aboard a boat on Lake Pontchartrain during the N80FP field operation; Ryan Hall is visible at the far left, identifiable by his red hair, plaid shirt, and glasses.';
+    }
+  }
+
+  const oversightHeading = document.querySelector('.safety-section h2');
+  if (oversightHeading) oversightHeading.textContent = 'Human review remained in control.';
+
+  const outcome = document.getElementById('outcome');
+  if (outcome) {
+    const heading = outcome.querySelector('.outcome-copy h2');
+    if (heading) heading.textContent = 'Outcome and attribution.';
+
+    const paragraphs = outcome.querySelectorAll('.outcome-copy > p');
+    if (paragraphs[1]) {
+      paragraphs[1].textContent = 'The strongest verified result of this project is that an AI-assisted analysis was translated into a real mobile coordination tool, deployed in a live search environment, and used by people other than its creator.';
+    }
+  }
+
+  const recognitionHeading = document.querySelector('.recognition-copy h2');
+  if (recognitionHeading) recognitionHeading.textContent = 'Post-operation recognition.';
+
+  const evidenceHeading = document.querySelector('#evidence > h2');
+  if (evidenceHeading) evidenceHeading.textContent = 'Verified evidence, personal testimony, and open items.';
+
+  const closing = document.querySelector('.closing-section');
+  if (closing) {
+    const heading = closing.querySelector('h2');
+    if (heading) heading.textContent = 'Why this case study is relevant.';
+
+    const paragraph = closing.querySelector(':scope > p:not(.section-index)');
+    if (paragraph) {
+      paragraph.textContent = 'This project shows how an LLM-assisted process can be turned into a usable workflow: identify the information problem, build a practical tool, preserve human control, and leave behind something other people can use and evaluate.';
+    }
+  }
+}
+
 installRecoveredSearchSimulation();
 installOpenAICorrespondence();
+installEditorialRevisions();
 
 window.addEventListener('scroll', updateProgress, { passive: true });
 updateProgress();
