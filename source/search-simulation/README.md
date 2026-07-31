@@ -1,34 +1,41 @@
 # N80FP Search Simulation — Recovered Source
 
-This folder preserves the recovered source for the specialized N80FP search-sector interface shown in the case-study screenshots.
+This folder preserves the sanitized source for the specialized N80FP search-sector interface used during the Lake Pontchartrain field operation.
 
 ## Operational role
 
-Ryan used this application after arriving at the Lake Pontchartrain search area to refine the working aircraft model and translate the analysis into a field-usable interface. Development was iterative, moving between ChatGPT-assisted reasoning and Google Gemini / AI Studio implementation while the search operation was active.
+Ryan used the application after arriving at the search area to refine the working aircraft model and translate it into a field-usable interface. Development moved iteratively between ChatGPT-assisted reasoning and Google Gemini / AI Studio implementation while the search was active.
 
-The application should be understood as an **in-field modeling and coordination tool**. It preserves the working modeled point, visualizes the search geometry, incorporates live device position, and supports a consistent marker workflow for crews on the water.
+The application preserved the modeled point, last-known-position reference, reported debris reference, search geometry, live device position, vessel track, and a common `clear`, `debris`, and `crash` marker vocabulary.
 
-## Documentation boundary
+## Important distinction: solver versus visualization
 
-The recovered source contains two related layers that should not be conflated:
+The recovered project contains an executable **visualization and coordination layer**. It directly implements:
 
-1. **The executable visualization layer** implements the coordinate constants, local 3D projection, search ellipse, GPS position, path history, field markers, and an animated aircraft path.
-2. **The trajectory-constraint layer** is the fixed-wing kinematic and aerodynamic reasoning used upstream to generate or test candidate paths before the working point and search geometry were entered into the field interface.
+- configured geographic points;
+- a local latitude/longitude-to-Three.js projection;
+- a parametric search ellipse;
+- live browser geolocation;
+- vessel movement and path history;
+- timestamped field markers;
+- an animated aircraft path.
 
-The recovered `Plane.tsx` animation is a visualization of the terminal movement. It linearly interpolates from the last-known-position marker to the scene origin over 12 seconds and applies a small sinusoidal bank animation. It is not, by itself, a full six-degree-of-freedom flight-dynamics solver. The equations below therefore separate what the recovered build executes directly from the broader derivation stack used to constrain the aircraft's physically possible motion.
+The recovered `Plane.tsx` component is not a complete flight-dynamics solver. It linearly interpolates an aircraft model from the LKP altitude to the scene origin over 12 seconds and adds a small sinusoidal display bank. The fixed-wing equations later in this README document the physical derivation stack used to constrain candidate trajectories; they are not all numerically integrated by that React component.
+
+This separation is deliberate: it makes the repository auditable without pretending that the visual animation alone contains every upstream calculation.
 
 ## Configured operational state
 
-The recovered source explicitly stores:
+The recovered source stores:
 
-- last-known-position marker: `30.1100, -90.0300`
-- displayed last-known altitude: `908 ft`
-- modeled point of impact: `30.1038, -90.0309`
-- Cajun Navy slick/debris reference: `30.1103, -90.0254`
-- scene scale: `S = 75,000` scene units per degree
-- approximate search ellipse: `0.9 NM × 0.5 NM`
+- **LKP:** `30.1100, -90.0300`
+- **LKP altitude label:** `908 ft`
+- **Modeled POI:** `30.1038, -90.0309`
+- **Slick/debris reference:** `30.1103, -90.0254`
+- **Scene scale:** `S = 75,000` scene units per degree
+- **Displayed search envelope:** approximately `0.9 NM × 0.5 NM`
 
-The scene origin is the midpoint of the modeled point and the debris reference:
+The scene origin is the midpoint of the modeled POI and debris reference:
 
 $$
 \phi_0=\frac{30.1038+30.1103}{2}=30.10705
@@ -40,11 +47,11 @@ $$
 
 where $\phi$ is latitude and $\lambda$ is longitude.
 
-# Equations executed by the recovered application
+# Equations directly implemented by the recovered app
 
-## 1. Local latitude/longitude to Three.js coordinates
+## 1. Local scene projection
 
-The recovered `constants.ts` uses a local linear projection:
+`constants.ts` maps latitude and longitude to the Three.js X/Z plane using:
 
 $$
 x=S(\lambda-\lambda_0)
@@ -54,11 +61,13 @@ $$
 z=S(\phi-\phi_0)
 $$
 
+Altitude is displayed with ten feet per scene unit:
+
 $$
 y=\frac{h_{ft}}{10}
 $$
 
-with $S=75{,}000$. The inverse mapping is:
+The inverse mapping is:
 
 $$
 \lambda=\lambda_0+\frac{x}{S}
@@ -68,11 +77,11 @@ $$
 \phi=\phi_0+\frac{z}{S}
 $$
 
-This projection is intentionally local and display-oriented. It is adequate for the small Lake Pontchartrain sector represented by the interface, but it is not a full WGS-84 geodesic transform.
+This is a local display projection, not a full WGS-84 geodesic transformation.
 
 ## 2. Search ellipse
 
-The displayed search boundary is generated parametrically:
+`SceneMarkers.tsx` generates the search boundary parametrically:
 
 $$
 \phi(\theta)=\phi_0+a_{\phi}\sin\theta
@@ -85,34 +94,38 @@ $$
 for $0\leq\theta\leq2\pi$, with:
 
 $$
-a_{\phi}=0.0075^\circ,\qquad b_{\lambda}=0.0050^\circ
+a_{\phi}=0.0075^\circ,
+\qquad
+b_{\lambda}=0.0050^\circ
 $$
 
-At approximately $30.1^\circ$ north latitude, those angular semi-axes correspond to a displayed full envelope of roughly $0.9$ nautical miles north-south by $0.5$ nautical miles east-west.
+Near $30.1^\circ$ north latitude, these angular semi-axes produce a displayed full envelope of roughly $0.9$ nautical miles north-south by $0.5$ nautical miles east-west.
 
-## 3. Aircraft animation in the recovered build
+## 3. Aircraft animation
 
-Let $\mathbf r_s$ be the 3D start vector at the LKP, $\mathbf r_e$ the scene-origin endpoint, and $T=12$ seconds. The recovered animation uses:
+Let $\mathbf r_s$ be the LKP start vector, $\mathbf r_e$ the scene-origin endpoint, and $T=12$ seconds.
 
 $$
-\alpha(t)=\frac{t}{T},\qquad 0\leq t\leq T
+\alpha(t)=\frac{t}{T},
+\qquad
+0\leq t\leq T
 $$
 
 $$
 \mathbf r(t)=(1-\alpha)\mathbf r_s+\alpha\mathbf r_e
 $$
 
-The displayed bank motion is cosmetic:
+The visual bank is:
 
 $$
 \varphi_{display}(t)=0.2\sin(2t)
 $$
 
-After the 12-second movement, the aircraft is hidden for a four-second reset interval before the loop repeats.
+The aircraft is hidden for four seconds after each 12-second pass before the loop resets.
 
-## 4. Boat movement and heading
+## 4. Manual boat movement
 
-In manual mode, with scene speed $v_s$, time step $\Delta t$, heading $\psi$, forward command $f$, and lateral command $q$:
+With scene speed $v_s$, frame interval $\Delta t$, heading $\psi$, forward command $f$, and lateral command $q$:
 
 $$
 \Delta x=v_s\Delta t\left(f\sin\psi+q\cos\psi\right)
@@ -122,15 +135,15 @@ $$
 \Delta z=v_s\Delta t\left(f\cos\psi-q\sin\psi\right)
 $$
 
-GPS mode converts the device position to the same local scene and interpolates the displayed boat toward the latest fix to reduce visible jitter.
+GPS mode maps the latest device fix into the same local scene and interpolates the boat toward it to reduce visible jitter.
 
 # Fixed-wing trajectory derivation stack
 
-The following stack describes the physical constraint model used to convert a final aircraft state into a bounded impact envelope. These are the equations that should govern a fixed-wing terminal-path solver; they are documented here separately from the simplified React animation above.
+This section documents the physical constraint model for converting a final aircraft state into a bounded impact envelope.
 
-## 1. Geodetic coordinates to a local tangent plane
+## 1. Metric local tangent plane
 
-For a physically scaled local east/north frame, using Earth radius $R_E$, radians, and reference latitude $\phi_0$:
+For a small geographic region, with Earth radius $R_E$, reference latitude $\phi_0$, and all angles in radians:
 
 $$
 E\approx R_E\cos\phi_0\,(\lambda-\lambda_0)
@@ -140,7 +153,7 @@ $$
 N\approx R_E(\phi-\phi_0)
 $$
 
-The inverse update is:
+The inverse transformation is:
 
 $$
 \phi\approx\phi_0+\frac{N}{R_E}
@@ -150,28 +163,41 @@ $$
 \lambda\approx\lambda_0+\frac{E}{R_E\cos\phi_0}
 $$
 
-This is the metric form of the local projection represented visually by `latLonToVector3`.
+This is the physically scaled version of the app's local scene projection.
 
-## 2. Aircraft state vector
+## 2. Terminal state vector
 
-A terminal candidate can be represented as:
+A candidate state is:
 
 $$
-\mathbf s(t)=\begin{bmatrix}E&N&h&V_a&\psi&\gamma&\varphi\end{bmatrix}^{T}
+\mathbf s(t)=
+\begin{bmatrix}
+E & N & h & V_a & \psi & \gamma & \varphi
+\end{bmatrix}^{T}
 $$
 
 where:
 
 - $E,N$ are local east and north displacement;
-- $h$ is height above the impact surface;
+- $h$ is height above the water surface;
 - $V_a$ is airspeed;
-- $\psi$ is heading or ground-track angle after wind correction;
+- $\psi$ is heading;
 - $\gamma$ is flight-path angle;
 - $\varphi$ is bank angle.
 
-## 3. Wind-corrected ground velocity
+## 3. Wind-corrected motion
 
-Let the horizontal wind vector be $\mathbf V_w=(u_E,u_N)$. The horizontal ground-velocity vector is:
+Let the horizontal wind vector be:
+
+$$
+\mathbf V_w=
+\begin{bmatrix}
+u_E\\
+u_N
+\end{bmatrix}
+$$
+
+The horizontal ground velocity is:
 
 $$
 \mathbf V_g=
@@ -181,7 +207,8 @@ V_a\cos\gamma\cos\psi
 \end{bmatrix}
 +
 \begin{bmatrix}
-u_E\\u_N
+u_E\\
+u_N
 \end{bmatrix}
 $$
 
@@ -199,11 +226,11 @@ $$
 \dot h=V_a\sin\gamma
 $$
 
-For descent, $\gamma<0$ and therefore $\dot h<0$.
+For a descent, $\gamma<0$ and $\dot h<0$.
 
-## 4. Coordinated-turn geometry
+## 4. Coordinated-turn radius and turn rate
 
-For a coordinated banked turn, horizontal force balance gives:
+Vertical force balance in a coordinated bank gives:
 
 $$
 L\cos\varphi=mg
@@ -215,117 +242,116 @@ $$
 L\sin\varphi=m\frac{V_a^2}{R}
 $$
 
-Dividing the equations yields:
+Dividing the two equations:
 
 $$
 \tan\varphi=\frac{V_a^2}{gR}
 $$
 
-so the turn radius is:
+Therefore:
 
 $$
 R=\frac{V_a^2}{g\tan\varphi}
 $$
 
-and the turn rate is:
+and:
 
 $$
 \omega=\dot\psi=\frac{g\tan\varphi}{V_a}
 $$
 
-These equations bound how sharply a fixed-wing aircraft can curve at a given speed and bank angle.
+These equations bound how sharply a fixed-wing aircraft can turn at a given speed and bank angle.
 
-## 5. Load factor and banked stall constraint
+## 5. Load factor and accelerated-stall gate
 
-From the vertical-force equation:
+The banked load factor is:
 
 $$
 n=\frac{L}{mg}=\frac{1}{\cos\varphi}
 $$
 
-Because stall speed increases with the square root of load factor:
+Stall speed rises with the square root of load factor:
 
 $$
 V_{S,\varphi}=V_{S,0}\sqrt n
 $$
 
-therefore:
+so:
 
 $$
 V_{S,\varphi}=\frac{V_{S,0}}{\sqrt{\cos\varphi}}
 $$
 
-A candidate state is rejected when:
-
-$$
-V_a<V_{S,\varphi}
-$$
-
-unless the modeled regime explicitly allows an accelerated stall or loss of controlled flight. This gate prevents the trajectory generator from accepting turns that a Cessna-class fixed-wing aircraft could not sustain aerodynamically.
+A controlled-flight candidate cannot remain valid below this bank-adjusted stall speed. A separate loss-of-control branch may continue beyond the gate, but it must be labeled as stalled or uncontrolled rather than treated as a sustainable coordinated turn.
 
 ## 6. Time-stepped spiral propagation
 
-For a small time step $\Delta t$:
+For time step $\Delta t$:
 
 $$
-\psi_{k+1}=\psi_k+\frac{g\tan\varphi_k}{V_{a,k}}\Delta t
-$$
-
-$$
-E_{k+1}=E_k+\left(V_{a,k}\cos\gamma_k\sin\psi_k+u_{E,k}\right)\Delta t
+\psi_{k+1}=\psi_k+
+\frac{g\tan\varphi_k}{V_{a,k}}\Delta t
 $$
 
 $$
-N_{k+1}=N_k+\left(V_{a,k}\cos\gamma_k\cos\psi_k+u_{N,k}\right)\Delta t
+E_{k+1}=E_k+
+\left(V_{a,k}\cos\gamma_k\sin\psi_k+u_{E,k}\right)\Delta t
+$$
+
+$$
+N_{k+1}=N_k+
+\left(V_{a,k}\cos\gamma_k\cos\psi_k+u_{N,k}\right)\Delta t
 $$
 
 $$
 h_{k+1}=h_k+V_{a,k}\sin\gamma_k\Delta t
 $$
 
-Propagation stops at the impact gate:
+Propagation stops at the water-contact gate:
 
 $$
 h_{k+1}\leq0
 $$
 
-The resulting $(E,N)$ position is transformed back into latitude and longitude.
+The final $(E,N)$ point is then transformed back to latitude and longitude.
 
 ## 7. Closed-form constant-state spiral
 
-When $V_a$, $\gamma$, $\varphi$, and wind are treated as constant over the short terminal interval, define:
+For constant $V_a$, $\gamma$, $\varphi$, and wind over a short terminal interval:
 
 $$
 \omega=\frac{g\tan\varphi}{V_a}
 $$
-
-Then:
 
 $$
 \psi(t)=\psi_0+\omega t
 $$
 
 $$
-E(t)=E_0+\frac{V_a\cos\gamma}{\omega}\left[\cos\psi_0-\cos(\psi_0+\omega t)\right]+u_Et
+E(t)=E_0+
+\frac{V_a\cos\gamma}{\omega}
+\left[\cos\psi_0-\cos(\psi_0+\omega t)\right]
++u_Et
 $$
 
 $$
-N(t)=N_0+\frac{V_a\cos\gamma}{\omega}\left[\sin(\psi_0+\omega t)-\sin\psi_0\right]+u_Nt
+N(t)=N_0+
+\frac{V_a\cos\gamma}{\omega}
+\left[\sin(\psi_0+\omega t)-\sin\psi_0\right]
++u_Nt
 $$
 
 $$
 h(t)=h_0+V_a\sin\gamma\,t
 $$
 
-For constant descent, the water-contact time is:
+For $\gamma<0$, the constant-state impact time is:
 
 $$
 t_{impact}=-\frac{h_0}{V_a\sin\gamma}
 $$
 
-provided $\gamma<0$.
-
-The straight-flight limit is obtained as $\varphi\rightarrow0$ and $\omega\rightarrow0$:
+The straight-flight limit as $\varphi\rightarrow0$ is:
 
 $$
 E(t)=E_0+V_a\cos\gamma\sin\psi_0\,t+u_Et
@@ -335,53 +361,65 @@ $$
 N(t)=N_0+V_a\cos\gamma\cos\psi_0\,t+u_Nt
 $$
 
-## 8. Glide-reach upper bound
+## 8. Glide-reach outer bound
 
-For a powerless but controlled glide in still air, a first-order horizontal-reach bound is:
+For a powerless but controlled glide in still air:
 
 $$
 D_{glide}\approx h_0\left(\frac{L}{D}\right)
 $$
 
-This is an outer reach bound, not a spiral-dive prediction. A steep descending turn, rising load factor, accelerated stall, structural breakup, or water impact before recovery produces a substantially smaller terminal footprint.
+This is an outer reach bound, not a spiral-dive prediction. A steep descending turn, increasing load factor, accelerated stall, loss of control, structural breakup, or water contact before recovery yields a smaller terminal footprint.
 
-## 9. Candidate-envelope construction
+## 9. Candidate envelope
 
-The model does not need to assume one exact bank, speed, descent angle, or wind vector. It can propagate a bounded family:
-
-$$
-\mathcal P=\left\{\mathbf s_0,V_a,\gamma,\varphi,\mathbf V_w:\text{all values within accepted evidence bounds}\right\}
-$$
-
-Each candidate is propagated to $h\leq0$. Candidates are discarded if they violate the fixed-wing gates, leave the geographic mask, contradict known debris or search evidence, or require discontinuous changes in speed, heading, or bank.
-
-The surviving impact points form the operational search envelope:
+Rather than selecting one exact speed, bank, descent angle, or wind value, the solver propagates a bounded family:
 
 $$
-\mathcal I=\left\{(\phi_i,\lambda_i):\mathbf p_i\text{ survives all constraints and reaches }h\leq0\right\}
+\mathcal P=
+\left\{
+\mathbf s_0,V_a,\gamma,\varphi,\mathbf V_w:
+\text{values within accepted evidence bounds}
+\right\}
 $$
 
-The displayed modeled POI and search ellipse are the field-interface representation of that constrained candidate set.
+Each candidate is propagated until $h\leq0$. A candidate is rejected when it violates the fixed-wing gates, leaves the geographic mask, contradicts the known evidence, or requires discontinuous changes in speed, heading, bank, or descent state.
 
-## What the recovered source establishes
+The surviving impact points define:
 
-The repository directly establishes that:
+$$
+\mathcal I=
+\left\{
+(\phi_i,\lambda_i):
+\mathbf p_i\text{ survives the constraints and reaches }h\leq0
+\right\}
+$$
 
-- the modeled point is stored as `30.1038, -90.0309`;
-- the LKP, altitude label, debris reference, scene origin, search ellipse, and marker taxonomy are encoded in source;
-- the application renders live GPS, a movable boat, path tracking, and timestamped `clear`, `debris`, and `crash` markers;
-- the recovered aircraft component visualizes a terminal path from the LKP altitude into the search scene;
-- the broader fixed-wing derivation stack can be reproduced independently from the documented equations and the original state-vector inputs.
+The modeled POI and displayed ellipse are the field-interface representation of that constrained candidate set.
 
-The source archive does not contain the complete upstream ADS-B table, every parameter sweep, or every conversation used before field deployment. Those provenance materials belong to the wider investigation record rather than this single application export.
+## Source files
+
+- `constants.ts` — configured coordinates, scene origin, projection, and inverse projection.
+- `App.tsx` — GPS state, search path, marker creation, and scene assembly.
+- `components/Vehicles/Plane.tsx` — recovered aircraft visualization.
+- `components/Vehicles/Boat.tsx` — manual and GPS vessel movement.
+- `components/World/SceneMarkers.tsx` — POIs, search ellipse, and marker rendering.
+- `components/World/SearchTrail.tsx` — vessel-track rendering.
+- `components/World/Water.tsx` — water surface.
+- `components/Overlay/HUD.tsx` — GPS display and field controls.
+- `types.ts` — geographic, boat, and marker data structures.
+
+## What is directly reproducible
+
+The public source establishes the configured POI, LKP, altitude label, debris reference, local projection, search ellipse, live GPS workflow, vessel track, marker taxonomy, and aircraft visualization.
+
+The archive does not contain the complete upstream ADS-B table, every parameter sweep, or every conversation that preceded field deployment. The fixed-wing derivation stack is included so the physical constraint logic is explicit and independently implementable without falsely attributing the entire solver to the simplified animation component.
 
 ## Security sanitation
 
-The uploaded archive contained a non-empty `.env.local`. That file was excluded. The recovered application does not make a Gemini API call at runtime, so no API credential is required by the published source.
+The original export contained a non-empty `.env.local`; that file was excluded. The recovered application does not make a Gemini API call at runtime, so no public API credential is required.
 
 ## Original AI Studio project
-
-The recovered export identifies the AI Studio app as:
 
 `https://ai.studio/apps/c80910d7-e780-4191-832b-39b3cf91e446`
 
