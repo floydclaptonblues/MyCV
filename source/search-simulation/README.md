@@ -2,6 +2,12 @@
 
 This is the recovered source for the specialized N80FP search-sector interface shown in the case-study screenshots.
 
+## Operational role
+
+Ryan used this application after arriving at the Lake Pontchartrain search area to refine the working aircraft model and translate the analysis into a field-usable interface. Development was iterative, moving between ChatGPT-assisted reasoning and Gemini Studio App Builder implementation while the search operation was active.
+
+The application should therefore be understood as an **in-field modeling and coordination tool**: it preserved the working modeled point, visualized the search geometry, incorporated live device position, and supported a consistent marker workflow for crews on the water.
+
 ## What the source establishes
 
 - The modeled point of impact is explicitly stored as `30.1038, -90.0309`.
@@ -12,7 +18,7 @@ This is the recovered source for the specialized N80FP search-sector interface s
 
 ## Evidentiary limitation
 
-This recovered application preserves the operational visualization and its configured modeled POI. It does not, by itself, reproduce the upstream calculations that generated that coordinate or prove when the coordinate was first entered. Those provenance questions are documented separately in the case study.
+This recovered application preserves the operational visualization, configured modeled POI, and field workflow. It does not, by itself, reproduce every upstream calculation or conversation that preceded the field deployment, nor does the source archive alone prove when the coordinate was first entered. Those provenance questions are documented separately in the case study.
 
 ## Security sanitation
 
