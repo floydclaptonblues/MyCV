@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="N80FP: an AI-assisted aircraft search workflow and live GPS field tracker developed by Ryan Hall for a human-led Lake Pontchartrain search operation." />
+  <meta name="theme-color" content="#061018" />
+  <title>N80FP — AI-Assisted Aircraft Search</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="N80FP case study home">
+      <span class="brand-mark">Y2K</span>
+      <span class="brand-text">FIELD CASE 001</span>
+    </a>
+    <nav aria-label="Case study navigation">
+      <a href="#workflow">Workflow</a>
+      <a href="#system">System</a>
+      <a href="#evidence">Evidence</a>
+      <a class="nav-cta" href="demo.html">Open demo</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse-dot"></span> N80FP / LAKE PONTCHARTRAIN / NOVEMBER 2025</p>
+        <h1>An AI-assisted aircraft search became a field tool.</h1>
+        <p class="hero-deck">I developed a recursive search workflow, translated it into mobile GPS interfaces, and shared a marker-based coordination system with boat crews during the human-led search for aircraft N80FP.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#system">Examine the system</a>
+          <a class="button secondary" href="demo.html">Launch reconstructed demo</a>
+          <a class="button ghost" href="source/tracker/README.md">Inspect archived source</a>
+        </div>
+      </div>
+      <aside class="mission-panel" aria-label="Mission summary">
+        <div class="mission-line"><span>CASE</span><strong>N80FP</strong></div>
+        <div class="mission-line"><span>ENVIRONMENT</span><strong>Lake search</strong></div>
+        <div class="mission-line"><span>DELIVERY</span><strong>Mobile browser</strong></div>
+        <div class="mission-line"><span>STACK</span><strong>React / TS / Three.js</strong></div>
+        <div class="mission-line"><span>DECISION RULE</span><strong>AI proposes. Humans decide.</strong></div>
+        <div class="mission-status"><span></span> ARCHIVED CASE STUDY</div>
+      </aside>
+    </section>
+
+    <section class="integrity-note section-shell" aria-label="Scope and attribution note">
+      <strong>Scope and attribution.</strong>
+      <p>This page documents Ryan Hall's contribution to a wider, multi-team recovery operation. It does not claim that one model, one tool, or one person independently located the aircraft. Search personnel, sonar operators, divers, K-9 teams, and physical evidence remained authoritative.</p>
+    </section>
+
+    <section class="section-shell split-section" id="context">
+      <div>
+        <p class="section-index">01 / CONTEXT</p>
+        <h2>A real incident, incomplete information, and a moving field operation.</h2>
+      </div>
+      <div class="body-copy">
+        <p>On November 24, 2025, Cessna 172N N80FP impacted Lake Pontchartrain during an instructional flight from Gulfport to New Orleans. Public reporting based on the NTSB preliminary investigation describes a rapid descending left turn before impact; volunteer recovery teams later located the wreckage, which was recovered on December 3.</p>
+        <p>The operational problem was not simply producing another coordinate. It was turning scattered flight data, candidate areas, debris observations, and eliminated locations into a workflow that people on boats could understand and use.</p>
+        <div class="source-pills">
+          <a href="https://www.ntsb.gov/Pages/AviationQuery.aspx" target="_blank" rel="noreferrer">NTSB accident database</a>
+          <a href="https://www.aopa.org/news-and-media/all-news/2026/january/07/data-from-fatal-approach-suggests-spiral-dive" target="_blank" rel="noreferrer">AOPA preliminary analysis</a>
+          <a href="https://www.wlox.com/2026/01/01/ntsb-releases-preliminary-report-fatal-gulfport-plane-crash-into-lake-pontchartrain/" target="_blank" rel="noreferrer">WLOX report summary</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell" id="workflow">
+      <p class="section-index">02 / WORKFLOW</p>
+      <h2>From model output to a shared operational language.</h2>
+      <div class="workflow-grid">
+        <article class="step-card"><span class="step-number">01</span><h3>Model</h3><p>Decompose the search problem into aircraft constraints, candidate sectors, last-known information, observed debris, and areas already eliminated.</p></article>
+        <article class="step-card"><span class="step-number">02</span><h3>Verify</h3><p>Check calculations independently, reject false-positive outputs, and preserve uncertainty instead of treating the model as an oracle.</p></article>
+        <article class="step-card"><span class="step-number">03</span><h3>Translate</h3><p>Convert the analysis into mobile interfaces with live GPS, a visible search sector, and standardized field markers.</p></article>
+        <article class="step-card"><span class="step-number">04</span><h3>Deploy</h3><p>Share the tracker with other boats so crews can clear locations or consistently mark debris and possible aircraft evidence.</p></article>
+      </div>
+    </section>
+
+    <section class="section-shell system-section" id="system">
+      <div class="section-heading-row">
+        <div><p class="section-index">03 / SYSTEM</p><h2>Two field interfaces, one operating principle.</h2></div>
+        <p class="heading-note">The archived source recovered for this case is the live 3D tracker. The more specialized search-interface source shown below has not yet been recovered, so that artifact is presented as a screenshot rather than executable code.</p>
+      </div>
+
+      <div class="artifact-grid">
+        <figure class="artifact tall">
+          <button class="image-button" data-image="assets/1000021127.jpg" aria-label="Open search interface screenshot"><img src="assets/1000021127.jpg" alt="Archived N80FP search interface showing modeled POI, last known position, debris marker, live GPS and clear, debris and crash marker controls" loading="lazy" /></button>
+          <figcaption><span>ARTIFACT A</span><strong>Search-sector interface</strong><p>The archived screen displays a modeled point, last-known position, reported slick or debris, live GPS, a search ellipse, and standardized Clear / Debris / Crash markers.</p></figcaption>
+        </figure>
+        <figure class="artifact tall">
+          <button class="image-button" data-image="assets/1000021128.jpg" aria-label="Open live tracker screenshot"><img src="assets/1000021128.jpg" alt="N80FP live 3D telemetry tracker showing latitude, longitude, GPS accuracy, speed, heading and a three-dimensional boat" loading="lazy" /></button>
+          <figcaption><span>ARTIFACT B</span><strong>Live 3D boat tracker</strong><p>The recovered React and Three.js project follows device position, visualizes boat heading and movement, stores timestamped markers, and exports field points as CSV.</p></figcaption>
+        </figure>
+      </div>
+
+      <div class="coordinate-card">
+        <img src="assets/coordinate-diagram.svg" alt="Relative plot of the modeled point, last known position and slick or debris report shown in the archived interface" loading="lazy" />
+        <div class="coordinate-copy">
+          <p class="micro-label">DISPLAYED COORDINATES</p><h3>A reproducible reading of the archived interface.</h3>
+          <p>The diagram plots only the three coordinates visible in the screenshot. It is not presented as an official wreckage map. The exact pre-discovery prediction-to-recovery distance remains withheld until both original timestamped coordinates can be independently reproduced.</p>
+          <dl><div><dt>Modeled POI</dt><dd>30.1038, −90.0309</dd></div><div><dt>Last known position</dt><dd>30.1100, −90.0300</dd></div><div><dt>Slick / debris report</dt><dd>30.1103, −90.0254</dd></div></dl>
+        </div>
+      </div>
+
+      <div class="technical-grid">
+        <div class="technical-copy">
+          <p class="micro-label">RECOVERED SOURCE</p><h3>What the code demonstrably does</h3>
+          <ul class="check-list"><li>Requests high-accuracy browser geolocation and continuously watches position.</li><li>Displays latitude, longitude, reported accuracy, speed, heading, and timestamp.</li><li>Projects local latitude/longitude offsets into a Three.js X/Z scene.</li><li>Moves and rotates a 3D boat from live GPS position and heading.</li><li>Builds a movement track and stores timestamped field markers.</li><li>Exports marker ID, time, coordinates, and scene position to CSV.</li></ul>
+          <div class="inline-actions"><a class="button primary" href="demo.html">Open reconstructed demo</a><a class="button secondary" href="source/tracker/README.md">Inspect source files</a></div>
+        </div>
+        <pre class="code-panel" aria-label="Archived tracker source excerpt"><code><span class="code-comment">// High-accuracy live position</span>
+navigator.geolocation.watchPosition(
+  success,
+  handleError,
+  {
+    enableHighAccuracy: true,
+    timeout: 10000,
+    maximumAge: 1000
+  }
+);
+
+<span class="code-comment">// Local projection</span>
+const dx = R * dLon * Math.cos(meanLat);
+const dz = R * dLat;
+
+<span class="code-comment">// Exportable field record</span>
+id,timestamp,latitude,longitude,
+scene_x,scene_z</code></pre>
+      </div>
+    </section>
+
+    <section class="section-shell field-section" id="deployment">
+      <div class="field-image-wrap"><button class="image-button" data-image="assets/1000021129.jpg" aria-label="Open field deployment photograph"><img src="assets/1000021129.jpg" alt="Search personnel aboard a boat on Lake Pontchartrain during the N80FP field operation" loading="lazy" /></button></div>
+      <div class="field-copy"><p class="section-index">04 / DEPLOYMENT</p><h2>The adoption problem was the actual job.</h2><p>I used the tracker in the field and distributed it to other boats so crews could apply the same marker vocabulary. That reduced the chance that one crew's “checked” location, another crew's “possible debris,” and a third crew's handwritten coordinates would become disconnected records.</p><blockquote>“The important step was not generating a coordinate. It was turning the analysis into something another person could operate while the boat was moving.”</blockquote><div class="marker-key" aria-label="Field marker categories"><span class="marker clear">CLEAR</span><span class="marker debris">DEBRIS</span><span class="marker crash">AIRCRAFT</span></div></div>
+    </section>
+
+    <section class="section-shell safety-section">
+      <p class="section-index">05 / HUMAN OVERSIGHT</p>
+      <div class="safety-grid"><div><h2>Automation stopped where accountability began.</h2><p>The system organized location data and made the search state legible. It did not determine whether evidence was authentic, direct boats into unsafe conditions, identify human remains, or supersede incident command.</p></div><div class="boundary-list"><div><span>AUTOMATE</span><p>Coordinate formatting, local projection, marker logging, track history, CSV export.</p></div><div><span>REVIEW</span><p>Model assumptions, duplicate reports, anomalous coordinates, uncertainty, device accuracy.</p></div><div><span>HUMAN ONLY</span><p>Safety, navigation, evidence classification, K-9 interpretation, dive decisions, recovery operations.</p></div></div></div>
+    </section>
+
+    <section class="section-shell outcome-section" id="outcome">
+      <div class="outcome-copy"><p class="section-index">06 / OUTCOME</p><h2>The aircraft was located. Attribution remains disciplined.</h2><p>The United Cajun Navy publicly announced that the missing Cessna 172 had been located following the wider search operation. This screenshot documents that outcome; it is not offered as independent proof that the software caused the discovery.</p><p>The strongest verified result of this project is narrower and still substantial: an AI-assisted analysis was translated into a real mobile coordination tool, deployed in a live search environment, and made usable by people other than its creator.</p><div class="pending-box"><strong>Pending verification</strong><p>The frequently cited “approximately 15 meters” result will not be published here until the original pre-discovery coordinate and an authoritative recovery coordinate are recovered and the distance calculation is reproducible.</p></div></div>
+      <figure class="artifact recovery-artifact"><button class="image-button" data-image="assets/Screenshot_20251130_195319_Facebook.jpg" aria-label="Open United Cajun Navy recovery update screenshot"><img src="assets/Screenshot_20251130_195319_Facebook.jpg" alt="United Cajun Navy social media update reading Missing Cessna 172 plane located" loading="lazy" /></button><figcaption><span>PUBLIC OUTCOME RECORD</span><strong>United Cajun Navy recovery update</strong><p>Archived social-media screenshot supplied by Ryan Hall.</p></figcaption></figure>
+    </section>
+
+    <section class="section-shell recognition-section">
+      <figure class="artifact recognition-artifact"><button class="image-button" data-image="assets/1000021131.jpg" aria-label="Open recognition letter and challenge coin photograph"><img src="assets/1000021131.jpg" alt="Handwritten recognition letter dated December 7 2025 with a forensic K9 investigation challenge coin" loading="lazy" /></button><figcaption><span>PRIVATE CORROBORATION</span><strong>Letter and K-9 challenge coin</strong><p>A dated handwritten letter and forensic K-9 investigation challenge coin were presented after the search in recognition of Ryan's contribution. This is not represented as an FBI award or institutional endorsement.</p></figcaption></figure>
+      <div class="recognition-copy"><p class="section-index">07 / RECOGNITION</p><h2>Recognition from the people closest to the work.</h2><p>The original letter and coin are retained privately. The archival photograph is included because it establishes that the contribution was recognized by a participant connected to the K-9 search effort—not because recognition replaces technical proof.</p><p>The evidentiary hierarchy remains clear: source code proves the tool; screenshots show its interface; field photographs show deployment; public records establish the broader incident and recovery; the letter documents personal recognition.</p></div>
+    </section>
+
+    <section class="section-shell evidence-section" id="evidence">
+      <p class="section-index">08 / EVIDENCE REGISTER</p><h2>What is verified, what is personal testimony, and what remains open.</h2>
+      <div class="evidence-grid">
+        <article><span class="evidence-status verified">RECOVERED</span><h3>Technical source</h3><p>React/TypeScript/Three.js tracker source, geolocation hook, marker state, track rendering, and CSV export.</p></article>
+        <article><span class="evidence-status verified">ARCHIVED</span><h3>Operational artifacts</h3><p>Two interface screenshots, one field-operation photograph, recovery-update screenshot, and recognition photograph.</p></article>
+        <article><span class="evidence-status testimony">AUTHOR TESTIMONY</span><h3>Cross-boat adoption</h3><p>Ryan states that the tracker was distributed to other boats for consistent marking and clearing of searched locations.</p></article>
+        <article><span class="evidence-status public">PUBLIC RECORD</span><h3>Incident and recovery</h3><p>NTSB-derived reporting documents the accident sequence, wreckage location relative to the final ADS-B point, and recovery.</p></article>
+        <article><span class="evidence-status pending">PENDING</span><h3>Advanced interface source</h3><p>The executable source for the specialized Clear / Debris / Crash interface has not yet been recovered.</p></article>
+        <article><span class="evidence-status pending">PENDING</span><h3>Precision claim</h3><p>The exact prediction-to-impact distance requires the original timestamped prediction and authoritative recovery coordinate.</p></article>
+      </div>
+    </section>
+
+    <section class="section-shell closing-section"><p class="section-index">WHY THIS MATTERS</p><h2>The artifact is not a prompt. It is a changed workflow.</h2><p>This project demonstrates the operator pattern: enter an unfamiliar and ambiguous process, identify the high-leverage information problem, build an assistive system, preserve human control, put the system in other people's hands, and leave behind reusable evidence rather than a one-time demonstration.</p><div class="hero-actions centered"><a class="button primary" href="demo.html">Open reconstructed field demo</a><a class="button secondary" href="source/tracker/README.md">Inspect archived source</a></div></section>
+  </main>
+
+  <footer><div><strong>RYAN HALL</strong><span>AI-assisted investigation · field workflow design · human-supervised systems</span></div><div><a href="https://y2kneverended.com">Y2KNeverEnded.com</a><span>Case-study revision 0.1</span></div></footer>
+
+  <dialog id="lightbox" aria-label="Image viewer"><button id="closeLightbox" aria-label="Close image viewer">×</button><img id="lightboxImage" alt="" /></dialog>
+  <script src="script.js"></script>
+</body>
+</html>
