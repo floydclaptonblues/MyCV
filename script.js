@@ -193,9 +193,70 @@ function installEditorialRevisions() {
   }
 }
 
+function installOperationalRoleConfirmation() {
+  const deployment = document.getElementById('deployment');
+  const evidenceSection = document.getElementById('evidence');
+  if (!deployment || document.getElementById('role-confirmation')) return;
+
+  const section = document.createElement('section');
+  section.className = 'section-shell recognition-section';
+  section.id = 'role-confirmation';
+  section.innerHTML = `
+    <figure class="artifact recognition-artifact">
+      <button class="image-button" data-image="assets/Screenshot%202026-07-31%20001724.png" aria-label="Open United Cajun Navy operational planning email">
+        <img src="assets/Screenshot%202026-07-31%20001724.png" alt="United Cajun Navy operational planning email dated November 28, 2025, listing Ryan Hall as an SME in the mission's ICS structure" loading="lazy" />
+      </button>
+      <figcaption>
+        <span>OPERATIONAL ROLE CONFIRMATION</span>
+        <strong>Listed as SME in the mission structure</strong>
+        <p>A mission-planning email from Incident Commander Josh Gill included Ryan Hall among the recipients and listed him as an SME.</p>
+      </figcaption>
+    </figure>
+    <div class="recognition-copy">
+      <p class="micro-label">OPERATIONAL ROLE CONFIRMATION</p>
+      <h2>Formal inclusion in the mission structure.</h2>
+      <p>The November 28, 2025 operational email distributed the incident overview, operational plan, and IAP for the United Cajun Navy mission. Ryan Hall appears in the ICS structure as an SME and was included among the mission recipients.</p>
+      <p>SME is commonly used for subject-matter expert. The email confirms formal involvement in the operation; the recovered source code, tracker artifacts, and field records document the modeling and software contribution described in this case study.</p>
+    </div>
+  `;
+
+  deployment.after(section);
+
+  const safetyIndex = document.querySelector('.safety-section .section-index');
+  if (safetyIndex) safetyIndex.textContent = '06 / HUMAN OVERSIGHT';
+
+  const outcomeIndex = document.querySelector('#outcome .section-index');
+  if (outcomeIndex) outcomeIndex.textContent = '07 / OUTCOME';
+
+  const recognitionIndex = document.querySelector('.recognition-section:not(#role-confirmation) .section-index');
+  if (recognitionIndex) recognitionIndex.textContent = '08 / RECOGNITION';
+
+  const correspondenceIndex = document.querySelector('#correspondence .section-index');
+  if (correspondenceIndex) correspondenceIndex.textContent = '09 / OPENAI CORRESPONDENCE';
+
+  const evidenceIndex = document.querySelector('#evidence .section-index');
+  if (evidenceIndex) evidenceIndex.textContent = '10 / EVIDENCE REGISTER';
+
+  if (evidenceSection) {
+    const evidenceGrid = evidenceSection.querySelector('.evidence-grid');
+    if (evidenceGrid && !evidenceGrid.querySelector('[data-role-confirmation-card]')) {
+      const card = document.createElement('article');
+      card.dataset.roleConfirmationCard = 'true';
+      card.innerHTML = `
+        <span class="evidence-status verified">ARCHIVED</span>
+        <h3>Operational role confirmation</h3>
+        <p>A November 28 mission-planning email includes Ryan Hall among the recipients and lists him as an SME in the United Cajun Navy ICS structure.</p>
+      `;
+      const publicRecordCard = [...evidenceGrid.children].find((item) => item.textContent.includes('Incident and recovery'));
+      evidenceGrid.insertBefore(card, publicRecordCard || null);
+    }
+  }
+}
+
 installRecoveredSearchSimulation();
 installOpenAICorrespondence();
 installEditorialRevisions();
+installOperationalRoleConfirmation();
 
 window.addEventListener('scroll', updateProgress, { passive: true });
 updateProgress();
