@@ -208,19 +208,19 @@ function installOperationalRoleConfirmation() {
   section.innerHTML = `
     <figure class="artifact recognition-artifact">
       <button class="image-button" data-image="assets/Screenshot%202026-07-31%20001724.png" aria-label="Open United Cajun Navy operational planning email">
-        <img src="assets/Screenshot%202026-07-31%20001724.png" alt="United Cajun Navy operational planning email dated November 28, 2025, listing Ryan Hall as an SME in the mission's ICS structure" loading="lazy" />
+        <img src="assets/Screenshot%202026-07-31%20001724.png" alt="United Cajun Navy operational planning email dated November 28, 2025, listing Ryan Hall as Special Marine Envoy in the mission's ICS structure" loading="lazy" />
       </button>
       <figcaption>
         <span>OPERATIONAL ROLE CONFIRMATION</span>
-        <strong>Listed as SME in the mission structure</strong>
-        <p>A mission-planning email from Incident Commander Josh Gill included Ryan Hall among the recipients and listed him as an SME.</p>
+        <strong>Listed as Special Marine Envoy</strong>
+        <p>A mission-planning email from Incident Commander Josh Gill included Ryan Hall among the recipients and listed him as Special Marine Envoy (SME).</p>
       </figcaption>
     </figure>
     <div class="recognition-copy">
       <p class="micro-label">05 / OPERATIONAL ROLE CONFIRMATION</p>
       <h2>Formal inclusion in the mission structure.</h2>
-      <p>The November 28, 2025 operational email distributed the incident overview, operational plan, and IAP for the United Cajun Navy mission. Ryan Hall appears in the ICS structure as an SME and was included among the mission recipients.</p>
-      <p>SME is commonly used for subject-matter expert. The email confirms formal involvement in the operation; the recovered source code, tracker artifacts, and field records document the modeling and software contribution described in this case study.</p>
+      <p>The November 28, 2025 operational email distributed the incident overview, operational plan, and IAP for the United Cajun Navy mission. Ryan Hall appears in the ICS structure as Special Marine Envoy (SME) and was included among the mission recipients.</p>
+      <p>In this mission, SME means Special Marine Envoy. The email confirms formal involvement in the operation; the recovered source code, tracker artifacts, and field records document the modeling and software contribution described in this case study.</p>
     </div>
   `;
 
@@ -232,7 +232,7 @@ function installOperationalRoleConfirmation() {
     `
       <span class="evidence-status verified">ARCHIVED</span>
       <h3>Operational role confirmation</h3>
-      <p>A November 28 mission-planning email includes Ryan Hall among the recipients and lists him as an SME in the United Cajun Navy ICS structure.</p>
+      <p>A November 28 mission-planning email includes Ryan Hall among the recipients and lists him as Special Marine Envoy (SME) in the United Cajun Navy ICS structure.</p>
     `,
     'Incident and recovery'
   );
