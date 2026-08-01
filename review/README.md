@@ -57,7 +57,7 @@ The recovered `Plane.tsx` component performs a 12-second linear interpolation fr
 - JSON and CSV output;
 - Cartesian parameter sweeps.
 
-The reference model assumes constant airspeed, bank, flight-path angle, and wind over a short terminal interval. It is not a high-fidelity accident reconstruction. It does not model changing controls, structural breakup, post-stall aerodynamics, water-entry physics, or measurement uncertainty internally.
+The reference model assumes constant airspeed, bank, flight-path angle, and wind over a short terminal interval. It is not a high-fidelity accident reconstruction. It does not model changing controls, structural breakup, post-stall aerodynamics, water-entry physics, the subsequent surface skid, debris movement, final wreckage distribution, or measurement uncertainty internally.
 
 ## Claim status
 
@@ -65,7 +65,7 @@ The complete structured matrix is in `claims.json`.
 
 | ID | Claim | Status | Limitation |
 |---|---|---|---|
-| C-001 | Modeled POI stored at `30.1038, -90.0309` | Direct | Does not establish when it was generated or entered |
+| C-001 | Modeled POI stored at `30.1038, -90.0309` | Direct | Does not establish when it was generated or entered; treat it as one field reference within a broader contact and recovery area |
 | C-002 | LKP stored at `30.1100, -90.0300` with an approximately `908 ft` label | Direct | Datum and rounding are not established |
 | C-003 | Debris reference stored at `30.1103, -90.0254` | Direct | Does not independently validate the report |
 | C-004 | Search application includes projection, ellipse, GPS, path, and markers | Direct | Projection is a display transform, not full geodesy |
@@ -73,8 +73,8 @@ The complete structured matrix is in `claims.json`.
 | C-006 | Boat tracker records geolocation, movement, markers, and CSV | Direct | Not certified navigation software |
 | C-007 | Applications were used during the field operation | Corroborated | No complete contemporaneous software-use log |
 | C-008 | Tracker was distributed to other boats | Testimony | No public boat-by-boat access log |
-| C-009 | Fixed-wing derivation is independently implementable | Derived | Current reference model is low order and constant state |
-| C-010 | Approximately 15-meter prediction-to-recovery distance | Not established | Required timestamped prediction and authoritative recovery coordinate are absent |
+| C-009 | Fixed-wing derivation is independently implementable | Derived | Current reference model is low order, constant state, and stops at water contact |
+| C-010 | One coordinate represents the complete contact, surface-movement, and recovery sequence | Not established | Requires contact-path, debris, wreckage-distribution, and recovery-area records |
 | C-011 | Software independently caused the recovery | Not established | Not claimed; recovery was multi-team |
 
 ## Parameter state
@@ -108,7 +108,7 @@ Wings-level stall speed is optional in the code because the historical configura
 
 ### Comparison target
 
-The configured modeled POI is stored as a comparison target. It is not consumed by the propagation equations and must not be used to select or tune the input parameters.
+The configured modeled coordinate is stored as a comparison reference. It is not consumed by the propagation equations and must not be used to select or tune the input parameters. Review should compare the modeled water-contact region with available contact-path, debris, wreckage-distribution, and recovery-area records rather than treating one coordinate as the aircraft's final resting position.
 
 ## Equation-to-code map
 
@@ -124,6 +124,7 @@ The configured modeled POI is stored as a comparison target. It is not consumed 
 | Descent propagation | documented derivation | `propagate()` |
 | Accelerated-stall gate | documented derivation | applied only when stall speed is supplied |
 | Water contact | documented derivation | interpolated final numerical step |
+| Surface skid and wreckage distribution | not modeled | outside current reference-model scope |
 | Parameter sweep | historical sweep incomplete | CSV Cartesian sweep |
 
 ## Reproducibility procedure
@@ -177,11 +178,11 @@ The model uses Python 3 and the standard library only.
 
 Single-run outputs are `summary.json` and `track.csv`. Sweep output is `impact_points.csv`.
 
-The single-run summary reports the difference between the numerical integration and the closed-form constant-state solution. A large difference indicates an integration-step or implementation problem.
+The single-run summary reports the difference between the numerical integration and the closed-form constant-state solution. A large difference indicates an integration-step or implementation problem. The reported terminal coordinate is a modeled water-contact coordinate, not a simulated final resting position.
 
 ## Priority reviewer questions
 
-1. Can the modeled point be regenerated from records that predate recovery without reading the stored modeled point?
+1. Can the modeled water-contact region be regenerated from records that predate recovery without reading the stored modeled coordinate?
 2. Which terminal-state values are measured, inferred, assumed, or selected after viewing the outcome?
 3. Is `908 ft` AGL, MSL, pressure altitude, or a rounded display value?
 4. Is the available speed airspeed or ADS-B groundspeed?
@@ -196,13 +197,15 @@ The single-run summary reports the difference between the numerical integration 
 13. Was the displayed search ellipse generated from surviving trajectories or selected manually?
 14. Does deleting the comparison target change any propagation result?
 15. Can a clean checkout reproduce results without private threads or API credentials?
-16. Which missing artifact would most improve confidence: raw ADS-B rows, timestamped prediction logs, weather records, or authoritative recovery coordinates?
+16. Which missing artifact would most improve confidence: raw ADS-B rows, timestamped prediction logs, weather records, water-contact observations, debris-path records, or wreckage-distribution records?
 
 ## Interpretation rules
 
 - A stored coordinate does not establish when it was generated.
 - A visualization does not prove that every documented equation executed inside the visual component.
-- A close comparison to a known location is not predictive evidence unless timestamps and parameter provenance exclude post-outcome leakage.
+- The reference model stops at water contact; it does not simulate the aircraft's subsequent movement across the water or final wreckage distribution.
+- A modeled coordinate should be evaluated within a documented contact and recovery area, not treated as an exact final resting point.
+- A close comparison to known evidence is not predictive evidence unless timestamps and parameter provenance exclude post-outcome leakage.
 - A bounded envelope does not imply that all surviving points are equally likely.
 - Field use does not prove causal contribution to the final recovery.
 - Findings should distinguish implementation defects, missing evidence, uncertain assumptions, and valid low-fidelity approximations.
