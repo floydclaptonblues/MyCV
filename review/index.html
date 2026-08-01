@@ -73,7 +73,7 @@
         <tr><td>LKP, altitude label, and debris reference are stored</td><td class="status-direct">Direct</td><td>Altitude datum and underlying report accuracy require confirmation</td></tr>
         <tr><td>Search app implements projection, ellipse, GPS, path, and markers</td><td class="status-direct">Direct</td><td>Display projection is not a complete geodesic model</td></tr>
         <tr><td>Aircraft component is a complete trajectory solver</td><td class="status-missing">Not established</td><td><code>Plane.tsx</code> is a linear visualization component</td></tr>
-        <tr><td>Approximately 15-meter prediction-to-recovery distance</td><td class="status-missing">Not established</td><td>Timestamped prediction and authoritative recovery coordinate are absent</td></tr>
+        <tr><td>A single coordinate represents the complete contact and recovery sequence</td><td class="status-missing">Not established</td><td>The model stops at water contact and does not simulate the subsequent surface skid, debris movement, or final wreckage distribution</td></tr>
         <tr><td>Software independently caused the recovery</td><td class="status-missing">Not established</td><td>The operation involved multiple teams and evidence sources</td></tr>
       </tbody>
     </table>
@@ -87,7 +87,7 @@
         <tr><td>Airspeed</td><td>Turn rate, radius, horizontal and vertical motion</td><td>Substituting groundspeed can bias every trajectory</td></tr>
         <tr><td>Heading or ground track</td><td>Initial direction convention</td><td>Confusing heading and track embeds wind twice or not at all</td></tr>
         <tr><td>Bank-angle range</td><td>Turn rate, load factor, accelerated stall</td><td>Target-shaped footprints from arbitrary bank selection</td></tr>
-        <tr><td>Descent rate or flight-path angle</td><td>Impact time and horizontal reach</td><td>Large footprint changes from small vertical-state changes</td></tr>
+        <tr><td>Descent rate or flight-path angle</td><td>Water-contact time and horizontal reach</td><td>Large footprint changes from small vertical-state changes</td></tr>
         <tr><td>Wind vector</td><td>Ground-relative displacement</td><td>Direction-convention and altitude/time mismatch</td></tr>
         <tr><td>Stall speed and configuration</td><td>Controlled-flight validity gate</td><td>Sustaining physically impossible coordinated turns</td></tr>
       </tbody>
@@ -104,18 +104,18 @@ python review/model/trajectory_model.py \
 
 cd review/model
 python -m unittest -v</code></pre>
-    <p>The single-run output includes a numerical path, impact point, load factor, bank-adjusted stall speed when available, and a numerical-versus-closed-form comparison. Parameter sweeps write one row per candidate to CSV.</p>
+    <p>The single-run output includes a numerical path to modeled water contact, a water-contact coordinate, load factor, bank-adjusted stall speed when available, and a numerical-versus-closed-form comparison. It does not model the subsequent surface skid or final wreckage distribution. Parameter sweeps write one row per candidate to CSV.</p>
   </section>
 
   <section>
     <h2>Priority review questions</h2>
     <ol>
-      <li>Can the modeled point be regenerated from records that predate recovery without reading the stored modeled point?</li>
+      <li>Can the modeled water-contact region be regenerated from records that predate recovery without reading the stored modeled coordinate?</li>
       <li>Which terminal-state values are measured, inferred, assumed, or selected after viewing the outcome?</li>
       <li>Is the available speed airspeed or ADS-B groundspeed, and is wind applied consistently?</li>
       <li>Does the fixed-wing model remain valid near accelerated stall or loss of control?</li>
       <li>Was the displayed search ellipse produced from surviving trajectories or selected manually?</li>
-      <li>Which omitted artifact would most improve confidence in the result?</li>
+      <li>What contact-path, debris, or wreckage-distribution record would best support an area-based comparison?</li>
     </ol>
   </section>
 
