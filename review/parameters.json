@@ -1,6 +1,6 @@
 {
   "record": "N80FP trajectory-model parameter ledger",
-  "version": 1,
+  "version": 2,
   "conventions": {
     "heading": "degrees true, clockwise from north",
     "bank": "positive right turn; negative left turn",
@@ -39,7 +39,7 @@
       "unit": "degrees",
       "status": "direct",
       "source": "source/search-simulation/constants.ts",
-      "note": "Comparison target only. It must not be used to tune a supposedly independent propagation."
+      "note": "Stored modeled water-contact reference. Compare it with a documented contact and recovery area; do not treat it as an exact final resting position or use it to tune an independent propagation."
     },
     {
       "name": "modeled_poi_lon_deg",
@@ -47,7 +47,7 @@
       "unit": "degrees",
       "status": "direct",
       "source": "source/search-simulation/constants.ts",
-      "note": "Comparison target only. It must not be used to tune a supposedly independent propagation."
+      "note": "Stored modeled water-contact reference. Compare it with a documented contact and recovery area; do not treat it as an exact final resting position or use it to tune an independent propagation."
     },
     {
       "name": "airspeed_kt",
