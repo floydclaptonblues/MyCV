@@ -53,7 +53,7 @@
       "name": "airspeed_kt",
       "value": null,
       "unit": "kt",
-      "status": "missing",
+      "status": "missing-required",
       "source": null,
       "note": "Do not silently substitute groundspeed. Provide an airspeed source or a documented conversion model."
     },
@@ -61,7 +61,7 @@
       "name": "groundspeed_kt",
       "value": null,
       "unit": "kt",
-      "status": "missing",
+      "status": "missing-conditional",
       "source": null,
       "note": "Needed if ADS-B groundspeed is used to infer airspeed with wind."
     },
@@ -69,7 +69,7 @@
       "name": "heading_deg_true",
       "value": null,
       "unit": "degrees true",
-      "status": "missing",
+      "status": "missing-required",
       "source": null,
       "note": "Specify whether the source is track, heading, or an inferred orientation."
     },
@@ -77,7 +77,7 @@
       "name": "bank_deg",
       "value": null,
       "unit": "degrees",
-      "status": "missing",
+      "status": "missing-required",
       "source": null,
       "note": "Use a range when not directly observed. Negative values represent a left turn in the reference model."
     },
@@ -85,7 +85,7 @@
       "name": "flight_path_angle_deg",
       "value": null,
       "unit": "degrees",
-      "status": "missing",
+      "status": "missing-one-of-pair",
       "source": null,
       "note": "Supply this or vertical_speed_fpm, not both."
     },
@@ -93,7 +93,7 @@
       "name": "vertical_speed_fpm",
       "value": null,
       "unit": "ft/min",
-      "status": "missing",
+      "status": "missing-one-of-pair",
       "source": null,
       "note": "Supply this or flight_path_angle_deg, not both. Negative values indicate descent."
     },
@@ -101,25 +101,25 @@
       "name": "wind_speed_kt",
       "value": null,
       "unit": "kt",
-      "status": "missing",
+      "status": "missing-required",
       "source": null,
-      "note": "Use time- and altitude-appropriate wind evidence."
+      "note": "Use time- and altitude-appropriate wind evidence. Enter zero only with a documented still-air assumption."
     },
     {
       "name": "wind_from_deg_true",
       "value": null,
       "unit": "degrees true",
-      "status": "missing",
+      "status": "missing-required",
       "source": null,
-      "note": "Meteorological FROM convention."
+      "note": "Meteorological FROM convention. A direction is still required when wind speed is zero by the current input validator."
     },
     {
       "name": "stall_speed_wings_level_kt",
       "value": null,
       "unit": "kt",
-      "status": "missing",
+      "status": "missing-optional-gate",
       "source": null,
-      "note": "Requires aircraft configuration assumptions such as weight, flap position, and power state."
+      "note": "Required to apply the accelerated-stall gate. If omitted, the model can propagate but cannot establish controlled-flight validity against stall speed."
     },
     {
       "name": "dt_s",
