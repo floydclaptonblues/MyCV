@@ -1,0 +1,102 @@
+{
+  "record": "N80FP independent technical review",
+  "version": 1,
+  "status_definitions": {
+    "direct": "Supported directly by published source code or the face of an archived artifact.",
+    "corroborated": "Supported by more than one artifact or by an artifact plus participant testimony.",
+    "testimony": "Reported by Ryan Hall but not independently established by the published repository.",
+    "derived": "Mathematical statement or result that can be reproduced from identified inputs.",
+    "not_established": "The current public package does not support the statement."
+  },
+  "claims": [
+    {
+      "id": "C-001",
+      "statement": "The recovered search application stores a modeled point at 30.1038, -90.0309.",
+      "status": "direct",
+      "evidence": ["source/search-simulation/constants.ts"],
+      "limitations": "The source establishes the stored coordinate, not when it was first generated or entered."
+    },
+    {
+      "id": "C-002",
+      "statement": "The recovered search application stores an LKP reference at 30.1100, -90.0300 with an altitude label of approximately 908 ft.",
+      "status": "direct",
+      "evidence": ["source/search-simulation/constants.ts"],
+      "limitations": "The code stores a display label. The public package does not yet establish whether 908 ft is AGL, MSL, pressure altitude, or a rounded reporting value."
+    },
+    {
+      "id": "C-003",
+      "statement": "The recovered search application stores a slick/debris reference at 30.1103, -90.0254.",
+      "status": "direct",
+      "evidence": ["source/search-simulation/constants.ts"],
+      "limitations": "The source establishes the stored reference, not the independent accuracy of the underlying report."
+    },
+    {
+      "id": "C-004",
+      "statement": "The recovered search application implements a local scene projection, search ellipse, live browser geolocation, search path, and Clear/Debris/Crash marker workflow.",
+      "status": "direct",
+      "evidence": [
+        "source/search-simulation/constants.ts",
+        "source/search-simulation/App.tsx",
+        "source/search-simulation/components/World/SceneMarkers.tsx"
+      ],
+      "limitations": "The scene projection is a display transform, not a full WGS-84 geodesic computation."
+    },
+    {
+      "id": "C-005",
+      "statement": "The recovered Plane.tsx component is a 12-second linear interpolation from the LKP display point to the scene origin with a sinusoidal display bank.",
+      "status": "direct",
+      "evidence": ["source/search-simulation/components/Vehicles/Plane.tsx"],
+      "limitations": "This component is a visualization and is not the complete fixed-wing trajectory solver."
+    },
+    {
+      "id": "C-006",
+      "statement": "The live 3D boat tracker reads browser geolocation, displays vessel movement, records markers, and exports field data.",
+      "status": "direct",
+      "evidence": ["source/tracker/"],
+      "limitations": "The repository is not certified navigation or emergency-response software."
+    },
+    {
+      "id": "C-007",
+      "statement": "The applications were used during the N80FP field operation.",
+      "status": "corroborated",
+      "evidence": [
+        "assets/1000021129.jpg",
+        "assets/Screenshot 2026-07-31 001724.png",
+        "source/search-simulation/README.md"
+      ],
+      "limitations": "The public artifacts establish participation and deployment context but do not provide a complete contemporaneous software-use log."
+    },
+    {
+      "id": "C-008",
+      "statement": "The tracker was provided to other boats for common marker entry and search-location review.",
+      "status": "testimony",
+      "evidence": ["Ryan Hall field account"],
+      "limitations": "No published boat-by-boat access log or message archive currently verifies the full distribution record."
+    },
+    {
+      "id": "C-009",
+      "statement": "The fixed-wing equation stack in the repository can be implemented independently as a coordinated-turn descent model.",
+      "status": "derived",
+      "evidence": [
+        "source/search-simulation/README.md",
+        "review/model/trajectory_model.py",
+        "review/model/test_trajectory_model.py"
+      ],
+      "limitations": "The reference model is low order and constant state. It does not reconstruct every historical parameter sweep or model loss-of-control aerodynamics."
+    },
+    {
+      "id": "C-010",
+      "statement": "The modeled point was approximately 15 meters from an authoritative recovery coordinate.",
+      "status": "not_established",
+      "evidence": [],
+      "limitations": "The public package does not currently contain the required authoritative recovery coordinate and timestamped pre-discovery prediction record in a form suitable for independent comparison."
+    },
+    {
+      "id": "C-011",
+      "statement": "The software independently caused the aircraft to be located.",
+      "status": "not_established",
+      "evidence": [],
+      "limitations": "The repository expressly does not make this causal claim. The recovery was a multi-team operation."
+    }
+  ]
+}
