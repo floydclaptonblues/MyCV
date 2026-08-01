@@ -1,0 +1,141 @@
+{
+  "record": "N80FP trajectory-model parameter ledger",
+  "version": 1,
+  "conventions": {
+    "heading": "degrees true, clockwise from north",
+    "bank": "positive right turn; negative left turn",
+    "vertical_speed": "feet per minute; negative for descent",
+    "wind_direction": "meteorological direction wind is FROM",
+    "altitude": "height above water required by the reference model"
+  },
+  "parameters": [
+    {
+      "name": "initial_lat_deg",
+      "value": 30.11,
+      "unit": "degrees",
+      "status": "direct",
+      "source": "source/search-simulation/constants.ts",
+      "note": "Stored LKP latitude."
+    },
+    {
+      "name": "initial_lon_deg",
+      "value": -90.03,
+      "unit": "degrees",
+      "status": "direct",
+      "source": "source/search-simulation/constants.ts",
+      "note": "Stored LKP longitude."
+    },
+    {
+      "name": "altitude_ft_above_water",
+      "value": 908,
+      "unit": "ft",
+      "status": "provisional",
+      "source": "source/search-simulation/constants.ts",
+      "note": "The application stores an approximately 908 ft label. Datum and rounding require source confirmation before use as height above water."
+    },
+    {
+      "name": "modeled_poi_lat_deg",
+      "value": 30.1038,
+      "unit": "degrees",
+      "status": "direct",
+      "source": "source/search-simulation/constants.ts",
+      "note": "Comparison target only. It must not be used to tune a supposedly independent propagation."
+    },
+    {
+      "name": "modeled_poi_lon_deg",
+      "value": -90.0309,
+      "unit": "degrees",
+      "status": "direct",
+      "source": "source/search-simulation/constants.ts",
+      "note": "Comparison target only. It must not be used to tune a supposedly independent propagation."
+    },
+    {
+      "name": "airspeed_kt",
+      "value": null,
+      "unit": "kt",
+      "status": "missing",
+      "source": null,
+      "note": "Do not silently substitute groundspeed. Provide an airspeed source or a documented conversion model."
+    },
+    {
+      "name": "groundspeed_kt",
+      "value": null,
+      "unit": "kt",
+      "status": "missing",
+      "source": null,
+      "note": "Needed if ADS-B groundspeed is used to infer airspeed with wind."
+    },
+    {
+      "name": "heading_deg_true",
+      "value": null,
+      "unit": "degrees true",
+      "status": "missing",
+      "source": null,
+      "note": "Specify whether the source is track, heading, or an inferred orientation."
+    },
+    {
+      "name": "bank_deg",
+      "value": null,
+      "unit": "degrees",
+      "status": "missing",
+      "source": null,
+      "note": "Use a range when not directly observed. Negative values represent a left turn in the reference model."
+    },
+    {
+      "name": "flight_path_angle_deg",
+      "value": null,
+      "unit": "degrees",
+      "status": "missing",
+      "source": null,
+      "note": "Supply this or vertical_speed_fpm, not both."
+    },
+    {
+      "name": "vertical_speed_fpm",
+      "value": null,
+      "unit": "ft/min",
+      "status": "missing",
+      "source": null,
+      "note": "Supply this or flight_path_angle_deg, not both. Negative values indicate descent."
+    },
+    {
+      "name": "wind_speed_kt",
+      "value": null,
+      "unit": "kt",
+      "status": "missing",
+      "source": null,
+      "note": "Use time- and altitude-appropriate wind evidence."
+    },
+    {
+      "name": "wind_from_deg_true",
+      "value": null,
+      "unit": "degrees true",
+      "status": "missing",
+      "source": null,
+      "note": "Meteorological FROM convention."
+    },
+    {
+      "name": "stall_speed_wings_level_kt",
+      "value": null,
+      "unit": "kt",
+      "status": "missing",
+      "source": null,
+      "note": "Requires aircraft configuration assumptions such as weight, flap position, and power state."
+    },
+    {
+      "name": "dt_s",
+      "value": 0.1,
+      "unit": "s",
+      "status": "reference-model choice",
+      "source": "review/model/config.template.json",
+      "note": "Run sensitivity checks at smaller and larger steps. This is not claimed as the historical integration interval."
+    },
+    {
+      "name": "max_time_s",
+      "value": 180,
+      "unit": "s",
+      "status": "reference-model choice",
+      "source": "review/model/config.template.json",
+      "note": "Administrative stop only. A candidate is rejected if water contact occurs later."
+    }
+  ]
+}
