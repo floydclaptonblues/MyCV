@@ -1,6 +1,6 @@
 {
   "record": "N80FP independent technical review",
-  "version": 1,
+  "version": 2,
   "status_definitions": {
     "direct": "Supported directly by published source code or the face of an archived artifact.",
     "corroborated": "Supported by more than one artifact or by an artifact plus participant testimony.",
@@ -14,7 +14,7 @@
       "statement": "The recovered search application stores a modeled point at 30.1038, -90.0309.",
       "status": "direct",
       "evidence": ["source/search-simulation/constants.ts"],
-      "limitations": "The source establishes the stored coordinate, not when it was first generated or entered."
+      "limitations": "The source establishes the stored coordinate, not when it was first generated or entered. The coordinate is treated as a field reference within a broader water-contact and recovery area, not as a complete final-position record."
     },
     {
       "id": "C-002",
@@ -82,14 +82,14 @@
         "review/model/trajectory_model.py",
         "review/model/test_trajectory_model.py"
       ],
-      "limitations": "The reference model is low order and constant state. It does not reconstruct every historical parameter sweep or model loss-of-control aerodynamics."
+      "limitations": "The reference model is low order and constant state. It stops at water contact and does not reconstruct the subsequent surface skid, debris movement, final wreckage distribution, every historical parameter sweep, or loss-of-control aerodynamics."
     },
     {
       "id": "C-010",
-      "statement": "The modeled point was approximately 15 meters from an authoritative recovery coordinate.",
+      "statement": "A single coordinate represents the complete water-contact, surface-movement, and recovery sequence.",
       "status": "not_established",
       "evidence": [],
-      "limitations": "The public package does not currently contain the required authoritative recovery coordinate and timestamped pre-discovery prediction record in a form suitable for independent comparison."
+      "limitations": "The reference model terminates at water contact. Area-based comparison requires contact-path, debris, wreckage-distribution, and recovery records rather than one final coordinate."
     },
     {
       "id": "C-011",
