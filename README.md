@@ -37,6 +37,8 @@ The search application explicitly stores:
 
 The recovered `Plane.tsx` component is a 12-second linear visualization from the LKP display point to the scene origin. It is not represented as the complete trajectory solver. The fixed-wing derivation stack is documented separately in `source/search-simulation/README.md`, and the review package contains an independent low-order reference implementation.
 
+The reference model terminates at modeled water contact. It does not simulate the aircraft's subsequent movement across the water, debris movement, or final wreckage distribution. The stored modeled coordinate is therefore treated as one field reference within a broader contact and recovery area rather than as an exact final resting point.
+
 The recovered archives contained non-empty `.env.local` files. Those files were excluded. No credential is published.
 
 ## Archived image evidence
@@ -72,4 +74,4 @@ The repository separates source code, equations, screenshots, operational-role d
 
 The recovered applications establish the stored coordinates, interface behavior, geospatial workflow, and field-tool functions. They do not establish when every coordinate was first generated, reproduce every historical parameter sweep, or prove that one application independently caused the recovery.
 
-The review package deliberately records unresolved inputs and unsupported claims. In particular, the public package does not currently establish an approximately 15-meter prediction-to-recovery distance because the required timestamped prediction record and authoritative recovery coordinate are not both present in a reproducible comparison record.
+The review package deliberately records unresolved inputs and unsupported claims. Area-based evaluation should use documented water-contact, surface-path, debris, wreckage-distribution, and recovery records rather than reducing the operation to a distance between two single coordinates.
