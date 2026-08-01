@@ -1,0 +1,47 @@
+{
+  "record": {
+    "name": "N80FP independent review configuration",
+    "purpose": "Complete only with sourced values. Null values intentionally prevent execution.",
+    "units_and_conventions": {
+      "heading": "degrees true, clockwise from north",
+      "bank": "positive right turn; negative left turn",
+      "vertical_speed": "feet per minute; negative for descent",
+      "wind_direction": "meteorological direction wind is FROM"
+    }
+  },
+  "initial": {
+    "lat_deg": 30.11,
+    "lon_deg": -90.03,
+    "altitude_ft_above_water": 908,
+    "airspeed_kt": null,
+    "heading_deg_true": null,
+    "bank_deg": null,
+    "flight_path_angle_deg": null,
+    "vertical_speed_fpm": null,
+    "stall_speed_wings_level_kt": null
+  },
+  "environment": {
+    "wind_speed_kt": null,
+    "wind_from_deg_true": null
+  },
+  "integration": {
+    "dt_s": 0.1,
+    "max_time_s": 180
+  },
+  "policy": {
+    "allow_stalled_branch": false
+  },
+  "comparison_target": {
+    "label": "Configured modeled POI; comparison only, not an optimization target",
+    "lat_deg": 30.1038,
+    "lon_deg": -90.0309
+  },
+  "sweep": {
+    "airspeed_kt": [],
+    "heading_deg_true": [],
+    "bank_deg": [],
+    "vertical_speed_fpm": [],
+    "wind_speed_kt": [],
+    "wind_from_deg_true": []
+  }
+}
