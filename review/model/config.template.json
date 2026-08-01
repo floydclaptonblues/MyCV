@@ -36,12 +36,5 @@
     "lat_deg": 30.1038,
     "lon_deg": -90.0309
   },
-  "sweep": {
-    "airspeed_kt": [],
-    "heading_deg_true": [],
-    "bank_deg": [],
-    "vertical_speed_fpm": [],
-    "wind_speed_kt": [],
-    "wind_from_deg_true": []
-  }
+  "sweep": {}
 }
