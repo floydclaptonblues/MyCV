@@ -31,8 +31,8 @@
   "policy": {
     "allow_stalled_branch": false
   },
-  "comparison_target": {
-    "label": "Configured modeled POI; comparison only, not an optimization target",
+  "comparison_reference": {
+    "label": "Configured modeled water-contact reference within a broader contact and recovery area; not an optimization target or asserted final resting position",
     "lat_deg": 30.1038,
     "lon_deg": -90.0309
   },
