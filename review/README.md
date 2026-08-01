@@ -2,134 +2,145 @@
 
 ## Review request
 
-This package requests an independent technical review of the N80FP search-modeling workflow and its published software artifacts.
+This package requests an adversarial technical review of the N80FP search-modeling workflow and its published software artifacts.
 
-The review objective is to identify:
+The requested output is a list of:
 
-- mathematical errors;
-- unit or convention errors;
+- mathematical, unit, sign, and convention errors;
 - unsupported assumptions;
 - code-to-documentation mismatches;
-- use of post-discovery information in a pre-discovery model;
-- variables that should be represented as ranges or probability distributions;
+- post-outcome information leakage;
+- omitted variables and uncertainty sources;
 - conclusions that exceed the available evidence;
-- missing records required for reproducibility.
+- records required for independent reproduction.
 
-The requested review is adversarial. Agreement with the project narrative is not an objective.
+Agreement with the project narrative is not an objective.
 
 ## Package contents
 
-- `index.html` — browser entry point for reviewers.
+- `index.html` — browser review entry point.
 - `claims.json` — machine-readable claim-to-evidence matrix.
-- `parameters.json` — machine-readable parameter and provenance ledger.
-- `model/trajectory_model.py` — deterministic low-order reference implementation.
-- `model/config.template.json` — configuration template containing known values and deliberate nulls for unsourced values.
+- `parameters.json` — parameter, unit, status, source, and qualification ledger.
+- `model/trajectory_model.py` — deterministic low-order reference model.
+- `model/config.template.json` — fail-closed configuration template.
 - `model/test_trajectory_model.py` — standard-library unit tests.
 - `../source/search-simulation/README.md` — recovered application equations and fixed-wing derivation stack.
 - `../source/search-simulation/` — recovered search-interface source.
 - `../source/tracker/` — recovered live boat-tracker source.
 
-## Source boundary
+## Technical boundary
 
-The repository contains two distinct technical layers.
-
-### Recovered application layer
+### Recovered application
 
 The recovered React and Three.js source directly establishes:
 
-- stored geographic references;
-- the local display projection;
-- the search ellipse;
+- stored LKP, modeled-POI, and debris-reference coordinates;
+- the local scene projection;
+- the displayed search ellipse;
 - live browser geolocation;
 - vessel movement and search-path recording;
 - timestamped Clear, Debris, and Crash markers;
 - the aircraft visualization.
 
-The recovered `Plane.tsx` component is a linear display interpolation. It is not a complete flight-dynamics solver.
+The recovered `Plane.tsx` component performs a 12-second linear interpolation from the LKP display point to the scene origin and applies a sinusoidal display bank. It is not the complete flight-dynamics solver.
 
-### Reference-model layer
+### Independent reference model
 
-`model/trajectory_model.py` is a new, independent reference implementation of the documented coordinated-turn descent equations. It exists to permit review of the derivation without attributing the full solver to the recovered animation component.
+`model/trajectory_model.py` separately implements the documented coordinated-turn descent equations for review. It includes:
 
-The reference model assumes constant airspeed, bank, flight-path angle, and wind during a short terminal interval. It is not a high-fidelity accident reconstruction. It does not model changing control inputs, structural breakup, post-stall aerodynamics, water-entry dynamics, or sensor uncertainty internally.
+- meteorological wind-direction conversion;
+- heading and signed-bank conventions;
+- local tangent-plane coordinate output;
+- numerical propagation to the water-contact gate;
+- a closed-form constant-state cross-check;
+- load-factor and optional accelerated-stall validation;
+- JSON and CSV output;
+- Cartesian parameter sweeps.
 
-## Claim-to-evidence matrix
+The reference model assumes constant airspeed, bank, flight-path angle, and wind over a short terminal interval. It is not a high-fidelity accident reconstruction. It does not model changing controls, structural breakup, post-stall aerodynamics, water-entry physics, or measurement uncertainty internally.
+
+## Claim status
 
 The complete structured matrix is in `claims.json`.
 
-| ID | Claim | Status | Primary support | Principal limitation |
-|---|---|---|---|---|
-| C-001 | Modeled POI stored at `30.1038, -90.0309` | Direct | `constants.ts` | Does not prove when the coordinate was first generated or entered |
-| C-002 | LKP stored at `30.1100, -90.0300` with an approximately `908 ft` label | Direct | `constants.ts` | Altitude datum and rounding are not established |
-| C-003 | Slick/debris reference stored at `30.1103, -90.0254` | Direct | `constants.ts` | Does not independently validate the original report |
-| C-004 | Search app includes projection, ellipse, GPS, trail, and marker workflow | Direct | recovered source | Projection is a scene transform, not a full geodesic system |
-| C-005 | Aircraft display uses 12-second linear interpolation | Direct | `Plane.tsx` | Not the complete trajectory solver |
-| C-006 | Boat tracker records geolocation, movement, markers, and CSV | Direct | `source/tracker/` | Not certified navigation software |
-| C-007 | Applications were used in the field operation | Corroborated | field image, role email, archive | No complete contemporaneous software-use log |
-| C-008 | Tracker was distributed to other boats | Testimony | Ryan Hall field account | No public boat-by-boat access log |
-| C-009 | Fixed-wing derivation is independently implementable | Derived | derivation plus reference model | Low-order constant-state model |
-| C-010 | Approximately 15-meter prediction-to-recovery distance | Not established | none in public package | Requires timestamped prediction and authoritative recovery coordinate |
-| C-011 | Software independently caused the recovery | Not established | none | Not claimed; recovery was multi-team |
+| ID | Claim | Status | Limitation |
+|---|---|---|---|
+| C-001 | Modeled POI stored at `30.1038, -90.0309` | Direct | Does not establish when it was generated or entered |
+| C-002 | LKP stored at `30.1100, -90.0300` with an approximately `908 ft` label | Direct | Datum and rounding are not established |
+| C-003 | Debris reference stored at `30.1103, -90.0254` | Direct | Does not independently validate the report |
+| C-004 | Search application includes projection, ellipse, GPS, path, and markers | Direct | Projection is a display transform, not full geodesy |
+| C-005 | Aircraft display is a 12-second linear interpolation | Direct | Not the complete trajectory solver |
+| C-006 | Boat tracker records geolocation, movement, markers, and CSV | Direct | Not certified navigation software |
+| C-007 | Applications were used during the field operation | Corroborated | No complete contemporaneous software-use log |
+| C-008 | Tracker was distributed to other boats | Testimony | No public boat-by-boat access log |
+| C-009 | Fixed-wing derivation is independently implementable | Derived | Current reference model is low order and constant state |
+| C-010 | Approximately 15-meter prediction-to-recovery distance | Not established | Required timestamped prediction and authoritative recovery coordinate are absent |
+| C-011 | Software independently caused the recovery | Not established | Not claimed; recovery was multi-team |
 
-## Parameter ledger
+## Parameter state
 
-The complete structured ledger is in `parameters.json`.
+The complete ledger is in `parameters.json`.
 
-### Values currently present in recovered source
+### Present in recovered source
 
-| Parameter | Stored value | Status | Review issue |
-|---|---:|---|---|
-| LKP latitude | `30.1100` | Direct | Confirm source and precision |
-| LKP longitude | `-90.0300` | Direct | Confirm source and precision |
-| LKP altitude label | `908 ft` | Provisional | Determine AGL/MSL/pressure datum and rounding |
-| Modeled POI latitude | `30.1038` | Direct | Comparison only; do not tune model to target |
-| Modeled POI longitude | `-90.0309` | Direct | Comparison only; do not tune model to target |
-| Debris-reference latitude | `30.1103` | Direct | Validate original observation record |
-| Debris-reference longitude | `-90.0254` | Direct | Validate original observation record |
+- LKP: `30.1100, -90.0300`
+- altitude label: approximately `908 ft`
+- modeled POI: `30.1038, -90.0309`
+- debris reference: `30.1103, -90.0254`
 
-### Required values not yet populated in the public review configuration
+The `908 ft` value remains provisional for propagation until its datum and relationship to height above water are established.
+
+### Core values required to run the reference model
 
 - airspeed;
-- groundspeed if used to infer airspeed;
-- heading versus ground track;
-- bank-angle range and turn direction;
-- flight-path angle or vertical speed;
-- wind speed and direction at the relevant time and altitude;
-- wings-level stall speed and aircraft configuration;
-- uncertainty ranges and source quality for each value.
+- heading in degrees true;
+- signed bank angle;
+- either flight-path angle or vertical speed;
+- wind speed and wind-from direction;
+- positive height above water;
+- integration interval and maximum time.
 
-The configuration template uses `null` for these values. The model refuses to run until they are supplied.
+The template contains deliberate `null` values for unsourced core inputs. The model exits with a configuration error instead of assigning defaults.
+
+### Optional controlled-flight gate
+
+Wings-level stall speed is optional in the code because the historical configuration is unresolved. When supplied, the model calculates load factor and bank-adjusted stall speed and rejects a sub-stall coordinated-turn branch unless `policy.allow_stalled_branch` is explicitly enabled. When omitted, propagation may run, but the result does not establish controlled-flight validity against an accelerated-stall gate.
+
+### Comparison target
+
+The configured modeled POI is stored as a comparison target. It is not consumed by the propagation equations and must not be used to select or tune the input parameters.
 
 ## Equation-to-code map
 
-| Technical item | Recovered application | Review reference implementation |
+| Technical item | Recovered application | Reference model |
 |---|---|---|
-| Stored LKP, POI, debris reference | `source/search-simulation/constants.ts` | `config.template.json` |
-| Scene projection | `constants.ts` | metric local tangent conversion in `trajectory_model.py` |
-| Search ellipse | `components/World/SceneMarkers.tsx` | not used as a solver boundary by default |
-| Live GPS and marker entry | `App.tsx`, vehicle and HUD components | outside reference-model scope |
-| Aircraft display interpolation | `components/Vehicles/Plane.tsx` | explicitly not treated as dynamics |
-| Wind components | not present in recovered animation | `wind_components_mps()` |
+| Stored coordinates | `constants.ts` | configuration only |
+| Scene projection | `constants.ts` | metric tangent-plane inverse output |
+| Search ellipse | `SceneMarkers.tsx` | not used as a solver boundary by default |
+| GPS and markers | `App.tsx`, vehicle and HUD components | outside solver scope |
+| Aircraft animation | `Plane.tsx` | explicitly not treated as dynamics |
+| Wind components | absent from animation | `wind_components_mps()` |
 | Coordinated-turn rate | documented derivation | numerical and closed-form implementations |
 | Descent propagation | documented derivation | `propagate()` |
-| Accelerated-stall gate | documented derivation | validation before propagation |
-| Water-contact gate | documented derivation | interpolated final integration step |
-| Coordinate output | app inverse scene mapping | local tangent-plane inverse conversion |
-| Parameter sweep | historical record incomplete | Cartesian sweep with CSV output |
+| Accelerated-stall gate | documented derivation | applied only when stall speed is supplied |
+| Water contact | documented derivation | interpolated final numerical step |
+| Parameter sweep | historical sweep incomplete | CSV Cartesian sweep |
 
 ## Reproducibility procedure
 
-The reference model uses Python 3 and the standard library only.
+The model uses Python 3 and the standard library only.
 
-1. Copy the template:
+1. Copy the configuration:
 
    ```bash
    cp review/model/config.template.json review/model/config.local.json
    ```
 
-2. Populate each required `null` value and record its source in `parameters.json` or a separate review note.
+2. Populate all core required values. Record the source and uncertainty for each value in `parameters.json` or a separate review note.
 
-3. Run one candidate:
+3. Supply `stall_speed_wings_level_kt` when evaluating whether a coordinated-turn candidate remains above its bank-adjusted stall speed.
+
+4. Run one candidate:
 
    ```bash
    python review/model/trajectory_model.py \
@@ -137,7 +148,18 @@ The reference model uses Python 3 and the standard library only.
      --output-dir review/model/output
    ```
 
-4. Run a parameter sweep after supplying non-empty arrays under `sweep`:
+5. For a sweep, add only the parameters being varied under the `sweep` object, each with a non-empty array. Example:
+
+   ```json
+   {
+     "sweep": {
+       "bank_deg": [-20, -30, -40],
+       "airspeed_kt": [70, 80, 90]
+     }
+   }
+   ```
+
+   Then run:
 
    ```bash
    python review/model/trajectory_model.py \
@@ -146,69 +168,44 @@ The reference model uses Python 3 and the standard library only.
      --output-dir review/model/sweep-output
    ```
 
-5. Run tests:
+6. Run tests:
 
    ```bash
    cd review/model
    python -m unittest -v
    ```
 
-Single-run outputs:
+Single-run outputs are `summary.json` and `track.csv`. Sweep output is `impact_points.csv`.
 
-- `summary.json`
-- `track.csv`
+The single-run summary reports the difference between the numerical integration and the closed-form constant-state solution. A large difference indicates an integration-step or implementation problem.
 
-Sweep output:
+## Priority reviewer questions
 
-- `impact_points.csv`
-
-The summary compares the numerical integration with the closed-form constant-state solution. A large difference indicates an implementation or integration-step problem.
-
-## Reviewer questions
-
-### Input provenance
-
-1. Which terminal-state values existed before the recovery location was known?
-2. Are any current inputs copied from, rounded toward, or inferred from the known recovery area?
-3. Is the `908 ft` value height above water, MSL altitude, pressure altitude, or a display approximation?
+1. Can the modeled point be regenerated from records that predate recovery without reading the stored modeled point?
+2. Which terminal-state values are measured, inferred, assumed, or selected after viewing the outcome?
+3. Is `908 ft` AGL, MSL, pressure altitude, or a rounded display value?
 4. Is the available speed airspeed or ADS-B groundspeed?
 5. Is the available direction aircraft heading or ground track?
-
-### Mathematics and conventions
-
-6. Are heading and bank signs consistent in every equation and implementation?
-7. Is meteorological wind direction converted correctly to east/north velocity components?
-8. Does the local tangent-plane approximation remain adequate over the search area?
-9. Are degrees and radians separated consistently?
-10. Is vertical speed compatible with the selected airspeed and flight-path angle?
-11. Is the coordinated-turn equation appropriate once the aircraft approaches an accelerated stall or loss of control?
-12. Should turn rate be based on true airspeed, calibrated airspeed, or another quantity for this purpose?
-
-### Model structure
-
-13. Which parameters can reasonably remain constant during the terminal interval?
-14. Which require time-varying functions or bounded stochastic processes?
-15. Should a controlled-flight and loss-of-control branch be modeled separately?
-16. How should uncertainty in wind, bank, speed, and descent rate be combined without creating a misleading uniform grid?
-17. What rejection gates are physically justified, and which merely encode the expected answer?
-18. Does the search ellipse follow from surviving trajectories or was it manually selected?
-
-### Reproducibility and leakage
-
-19. Can the modeled POI be regenerated from pre-discovery records without reading the stored POI first?
-20. Does removing the modeled POI from the configuration change any propagation result?
-21. Can the result be reproduced from a clean checkout with no private conversation history or API access?
-22. Which historical calculations are absent from the repository?
-23. What additional artifact would most increase confidence: raw ADS-B rows, timestamped prediction logs, weather records, or authoritative recovery coordinates?
+6. Are heading, turn direction, and bank signs consistent throughout?
+7. Is meteorological wind direction converted correctly to east and north components?
+8. Is the local tangent-plane approximation adequate over the modeled region?
+9. Is the coordinated-turn model valid near accelerated stall or loss of control?
+10. Should controlled-flight and loss-of-control branches be modeled separately?
+11. Which parameters require time-varying or probabilistic treatment?
+12. Which rejection gates are physically justified, and which encode the expected answer?
+13. Was the displayed search ellipse generated from surviving trajectories or selected manually?
+14. Does deleting the comparison target change any propagation result?
+15. Can a clean checkout reproduce results without private threads or API credentials?
+16. Which missing artifact would most improve confidence: raw ADS-B rows, timestamped prediction logs, weather records, or authoritative recovery coordinates?
 
 ## Interpretation rules
 
-- A stored coordinate is not proof of when the coordinate was generated.
-- A visualization is not proof that every documented equation ran inside the visual component.
-- A close comparison to a known location is not predictive evidence unless parameter selection and timestamps exclude post-outcome leakage.
-- A bounded model result is not a statement that all points in the envelope are equally likely.
-- Field use is not proof of causal contribution to the final recovery.
-- Reviewer findings should distinguish implementation defects, missing evidence, uncertain assumptions, and valid-but-low-fidelity approximations.
+- A stored coordinate does not establish when it was generated.
+- A visualization does not prove that every documented equation executed inside the visual component.
+- A close comparison to a known location is not predictive evidence unless timestamps and parameter provenance exclude post-outcome leakage.
+- A bounded envelope does not imply that all surviving points are equally likely.
+- Field use does not prove causal contribution to the final recovery.
+- Findings should distinguish implementation defects, missing evidence, uncertain assumptions, and valid low-fidelity approximations.
 
 ## Safety and scope
 
